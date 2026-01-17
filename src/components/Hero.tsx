@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { ChevronDown } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
-// [수정 핵심] 외부 파일에서 불러오지 않고 여기서 바로 정의합니다.
-// 이렇게 하면 'translations' 파일을 찾지 않아서 에러가 안 납니다.
 export type Language = 'ko' | 'en' | 'jp';
 
 interface HeroProps {
@@ -18,7 +17,7 @@ const Hero: React.FC<HeroProps> = ({ language, introFinished, setIntroFinished }
     setIsDoorOpen(true);
     setTimeout(() => {
       setIntroFinished(true);
-    }, 1000);
+    }, 1500); // 문이 열리는 시간과 싱크를 맞춤
   };
 
   return (
@@ -30,41 +29,71 @@ const Hero: React.FC<HeroProps> = ({ language, introFinished, setIntroFinished }
         backgroundPosition: 'center'
       }}
     >
-      {/* 어두운 배경 오버레이 */}
-      <div className="absolute inset-0 bg-black/50 z-0"></div>
+      {/* 1. 배경을 더 어둡고 고급스럽게 눌러주는 그라데이션 */}
+      <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black z-0"></div>
 
-      {/* 인트로 대문 (가장 위에 표시 z-50) */}
-      <div 
-        className={`absolute inset-0 z-50 flex flex-col items-center justify-center bg-black transition-transform duration-1000 ease-in-out ${isDoorOpen ? '-translate-y-full' : 'translate-y-0'}`}
+      {/* 2. 인트로 대문 (framer-motion으로 부드럽게 위로 올라감) */}
+      <AnimatePresence>
+        {!introFinished && (
+          <motion.div 
+            className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-black"
+            initial={{ y: 0 }}
+            animate={isDoorOpen ? { y: "-100%" } : { y: 0 }}
+            transition={{ duration: 1.5, ease: [0.22, 1, 0.36, 1] }} // 고급스러운 가속도 커브
+          >
+            {/* 로고 애니메이션 */}
+            <motion.h1 
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 1, delay: 0.5 }}
+              className="text-5xl md:text-8xl font-bold tracking-[0.2em] text-white mb-12 text-center"
+            >
+              GLASS ROOM
+            </motion.h1>
+
+            {/* 입장 버튼 */}
+            <motion.button
+              onClick={handleEnter}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 1 }}
+              whileHover={{ scale: 1.05, borderColor: "rgba(245, 158, 11, 1)", color: "rgba(245, 158, 11, 1)" }}
+              className="px-12 py-4 border border-white/30 text-white/80 transition-all uppercase tracking-[0.3em] text-xs font-light"
+            >
+              Enter Sanctuary
+            </motion.button>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* 3. 메인 콘텐츠 (문이 열린 뒤 나타나는 화면) */}
+      <motion.div 
+        className="relative z-10 flex flex-col items-center justify-center text-center"
+        initial={{ opacity: 0 }}
+        animate={introFinished ? { opacity: 1 } : { opacity: 0 }}
+        transition={{ duration: 1, delay: 0.5 }}
       >
-        <h1 className="text-5xl md:text-7xl font-bold tracking-[0.3em] text-white mb-12 animate-pulse">
-          GLASS ROOM
-        </h1>
-        <button
-          onClick={handleEnter}
-          className="px-10 py-4 border border-white/50 hover:border-amber-500 hover:text-amber-500 text-white transition-all uppercase tracking-widest text-sm"
-        >
-          ENTER SANCTUARY
-        </button>
-      </div>
-
-      {/* 메인 콘텐츠 (문 열리면 보임 z-10) */}
-      <div className={`relative z-10 flex flex-col items-center justify-center text-center transition-opacity duration-1000 ${introFinished ? 'opacity-100' : 'opacity-0'}`}>
-        <h2 className="text-6xl md:text-9xl font-black text-white mb-6 tracking-tighter">
-          THE GLASS ROOM
+        <h2 className="text-6xl md:text-9xl font-black text-white mb-6 tracking-tighter mix-blend-overlay">
+          THE <span className="text-amber-500">GLASS</span>
         </h2>
-        <p className="text-xl md:text-3xl text-amber-500 tracking-[0.2em] font-light mb-16">
-          Drive in, Zone out.
+        <p className="text-xl md:text-2xl text-white/80 tracking-[0.5em] font-light mb-16 uppercase">
+          Private Garage Suites
         </p>
         
         {introFinished && (
-          <ChevronDown 
-            className="animate-bounce text-white/70 cursor-pointer" 
-            size={48}
-            onClick={() => window.scrollTo({ top: window.innerHeight, behavior: 'smooth' })}
-          />
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ repeat: Infinity, duration: 2, repeatType: "reverse" }}
+          >
+            <ChevronDown 
+              className="text-white/50 cursor-pointer hover:text-white transition-colors" 
+              size={32}
+              onClick={() => window.scrollTo({ top: window.innerHeight, behavior: 'smooth' })}
+            />
+          </motion.div>
         )}
-      </div>
+      </motion.div>
     </div>
   );
 };
