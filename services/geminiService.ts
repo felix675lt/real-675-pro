@@ -1,1 +1,3 @@
-export const getGeminiResponse = async () => "AI 점검중";
+export const getGeminiResponse = async (history: any, userMessage: string, language: string) => {
+  return "System Check OK";
+};
