@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
-import { Language } from '../types';
 import { ChevronDown } from 'lucide-react';
+
+// 타입을 파일 안에 직접 정의해서 오류 방지
+export type Language = 'ko' | 'en' | 'jp';
 
 interface HeroProps {
   language: Language;
@@ -53,3 +55,17 @@ const Hero: React.FC<HeroProps> = ({ language, introFinished, setIntroFinished }
         <p className="text-xl md:text-3xl text-amber-500 tracking-[0.2em] font-light mb-16">
           Drive in, Zone out.
         </p>
+        
+        {introFinished && (
+          <ChevronDown 
+            className="animate-bounce text-white/70 cursor-pointer" 
+            size={48}
+            onClick={() => window.scrollTo({ top: window.innerHeight, behavior: 'smooth' })}
+          />
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default Hero;
