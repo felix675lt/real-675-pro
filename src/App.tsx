@@ -1,28 +1,27 @@
 import React, { useState } from 'react';
-import Hero, { Language } from './components/Hero';
+import { MessageSquare } from 'lucide-react'; // 아이콘 추가
+import Hero from './components/Hero';
 import About from './components/About';
 import Gallery from './components/Gallery';
 import Navbar from './components/Navbar';
 import BookingModal from './components/BookingModal';
+import Concierge from './components/Concierge'; // 챗봇 추가
 
 function App() {
-  const [language, setLanguage] = useState<Language>('ko');
   const [introFinished, setIntroFinished] = useState(false);
   const [isBookingOpen, setIsBookingOpen] = useState(false);
+  const [isConciergeOpen, setIsConciergeOpen] = useState(false); // 챗봇 상태
 
   return (
-    <div className="bg-black min-h-screen text-white">
-      {/* 1. 메뉴바 (예약 버튼 누르면 창 열림) */}
+    <div className="bg-black min-h-screen text-white relative">
       <Navbar onReserve={() => setIsBookingOpen(true)} />
 
-      {/* 2. 메인 대문 */}
       <Hero 
-        language={language} 
+        language="ko" 
         introFinished={introFinished} 
         setIntroFinished={setIntroFinished} 
       />
       
-      {/* 3. 인트로 후 나타나는 콘텐츠 */}
       {introFinished && (
         <div className="animate-fade-in-up">
           <About />
@@ -34,10 +33,25 @@ function App() {
         </div>
       )}
 
-      {/* 4. 예약 모달창 (평소엔 숨겨짐) */}
-      <BookingModal 
-        isOpen={isBookingOpen} 
-        onClose={() => setIsBookingOpen(false)} 
+      {/* 챗봇 버튼 (항상 떠있음) */}
+      {introFinished && !isConciergeOpen && (
+        <button 
+          onClick={() => setIsConciergeOpen(true)}
+          className="fixed bottom-6 right-6 z-40 bg-amber-600 hover:bg-amber-500 text-white p-4 rounded-full shadow-lg transition-transform hover:scale-110"
+        >
+          <MessageSquare size={24} />
+        </button>
+      )}
+
+      {/* 모달창들 */}
+      <BookingModal isOpen={isBookingOpen} onClose={() => setIsBookingOpen(false)} />
+      <Concierge 
+        isOpen={isConciergeOpen} 
+        onClose={() => setIsConciergeOpen(false)} 
+        onReserve={() => {
+          setIsConciergeOpen(false); // 챗봇 닫고
+          setIsBookingOpen(true);    // 예약창 열기
+        }}
       />
     </div>
   );
