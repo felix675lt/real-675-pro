@@ -1,7 +1,1 @@
-export const getGeminiResponse = async (history: any, userMessage: string, language: string) => {
-  return new Promise<string>((resolve) => {
-    setTimeout(() => {
-      resolve("System Check OK");
-    }, 1000);
-  });
-};
+export const getGeminiResponse = async () => "AI 점검중";
