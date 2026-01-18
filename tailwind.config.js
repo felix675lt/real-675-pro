@@ -2,11 +2,22 @@
 export default {
   content: [
     "./index.html",
-    "./*.{js,ts,jsx,tsx}",
-    "./components/**/*.{js,ts,jsx,tsx}"
+    "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        luxury: {
+          900: '#0a0f1c',
+          800: '#111827',
+          gold: '#d4af37',
+        }
+      },
+      fontFamily: {
+        serif: ['Times New Roman', 'serif'],
+        sans: ['Arial', 'sans-serif'],
+      }
+    },
   },
   plugins: [],
 }
