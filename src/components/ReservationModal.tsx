@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { X, Calendar, Clock, CreditCard, CheckCircle, ChevronRight, ChevronLeft, Moon, Sun, Users, Lock } from 'lucide-react';
+import { X, Clock, CreditCard, CheckCircle, ChevronRight, ChevronLeft, Moon, Sun, Users, Lock } from 'lucide-react';
 import { Language } from '../types';
 import { translations } from '../translations';
 
@@ -17,22 +17,20 @@ const ReservationModal: React.FC<ReservationModalProps> = ({ isOpen, onClose, la
   const [step, setStep] = useState<Step>('type');
   const [stayType, setStayType] = useState<StayType>('overnight');
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
-  const [viewDate, setViewDate] = useState<Date>(new Date()); // Track displayed month
+  const [viewDate, setViewDate] = useState<Date>(new Date());
   const [selectedTime, setSelectedTime] = useState<string>('15:00');
   const [guests, setGuests] = useState(2);
   const [isProcessing, setIsProcessing] = useState(false);
 
   const t = translations[language].reservation;
 
-  // Reset state when opening
   useEffect(() => {
     if (isOpen) {
       setTimeout(() => setVisible(true), 10);
       document.body.style.overflow = 'hidden';
       setStep('type');
       setIsProcessing(false);
-      setViewDate(new Date()); // Reset calendar view to current month
-      // Ensure selected date is not in the past relative to today if re-opening
+      setViewDate(new Date());
       if (selectedDate < new Date()) {
         setSelectedDate(new Date());
       }
@@ -45,7 +43,6 @@ const ReservationModal: React.FC<ReservationModalProps> = ({ isOpen, onClose, la
 
   if (!isOpen) return null;
 
-  // Calendar Logic
   const generateCalendarDays = () => {
     const year = viewDate.getFullYear();
     const month = viewDate.getMonth();
@@ -59,7 +56,6 @@ const ReservationModal: React.FC<ReservationModalProps> = ({ isOpen, onClose, la
   };
 
   const getWeekDays = (lang: string) => {
-    // Jan 5, 2025 is a Sunday. Using this to generate localized weekdays.
     const baseDate = new Date(2025, 0, 5); 
     const days = [];
     for (let i = 0; i < 7; i++) {
@@ -78,22 +74,15 @@ const ReservationModal: React.FC<ReservationModalProps> = ({ isOpen, onClose, la
   const changeMonth = (offset: number) => {
     const newDate = new Date(viewDate.getFullYear(), viewDate.getMonth() + offset, 1);
     const today = new Date();
-    // Allow if new month is same as or after current month
     if (newDate.getFullYear() > today.getFullYear() || 
        (newDate.getFullYear() === today.getFullYear() && newDate.getMonth() >= today.getMonth())) {
       setViewDate(newDate);
     }
   };
 
-  const isPrevMonthDisabled = () => {
-    const today = new Date();
-    return viewDate.getMonth() === today.getMonth() && viewDate.getFullYear() === today.getFullYear();
-  };
-
   const handlePayment = (e: React.FormEvent) => {
     e.preventDefault();
     setIsProcessing(true);
-    // Simulate API call
     setTimeout(() => {
       setIsProcessing(false);
       setStep('confirmed');
@@ -162,8 +151,7 @@ const ReservationModal: React.FC<ReservationModalProps> = ({ isOpen, onClose, la
               <div className="flex gap-2">
                 <button 
                   onClick={() => changeMonth(-1)} 
-                  disabled={isPrevMonthDisabled()}
-                  className="p-1 hover:bg-white/10 rounded disabled:opacity-20 disabled:cursor-not-allowed text-white transition-colors"
+                  className="p-1 hover:bg-white/10 rounded text-white transition-colors"
                 >
                     <ChevronLeft className="w-4 h-4" />
                 </button>
@@ -211,8 +199,6 @@ const ReservationModal: React.FC<ReservationModalProps> = ({ isOpen, onClose, la
 
           {/* Time & Guests Section */}
           <div className="space-y-8">
-            
-            {/* Time Slot */}
             <div>
               <label className="flex items-center gap-2 text-luxury-gold text-xs uppercase tracking-widest mb-4">
                 <Clock className="w-4 h-4" /> {t.checkin}
@@ -250,7 +236,6 @@ const ReservationModal: React.FC<ReservationModalProps> = ({ isOpen, onClose, la
               </div>
             </div>
 
-            {/* Guests */}
             <div>
               <label className="flex items-center gap-2 text-luxury-gold text-xs uppercase tracking-widest mb-4">
                 <Users className="w-4 h-4" /> {t.guests}
@@ -296,7 +281,6 @@ const ReservationModal: React.FC<ReservationModalProps> = ({ isOpen, onClose, la
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-        {/* Order Summary */}
         <div className="bg-white/5 p-8 rounded-xl border border-white/10 h-fit">
           <h3 className="font-serif text-xl text-white mb-6 border-b border-white/10 pb-4">{t.summary}</h3>
           <div className="space-y-4 text-sm">
@@ -325,7 +309,6 @@ const ReservationModal: React.FC<ReservationModalProps> = ({ isOpen, onClose, la
           </div>
         </div>
 
-        {/* Payment Form */}
         <div>
             <form onSubmit={handlePayment} className="space-y-6">
             <div>
@@ -335,107 +318,4 @@ const ReservationModal: React.FC<ReservationModalProps> = ({ isOpen, onClose, la
             <div>
                 <label className="block text-xs uppercase text-slate-500 mb-2">{t.cardNumber}</label>
                 <div className="relative">
-                <CreditCard className="absolute left-4 top-3.5 w-5 h-5 text-slate-500" />
-                <input type="text" required placeholder="0000 0000 0000 0000" className="w-full bg-black/30 border border-white/10 rounded-lg pl-12 pr-4 py-3 text-white focus:border-luxury-gold focus:outline-none font-mono" />
-                </div>
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-                <div>
-                <label className="block text-xs uppercase text-slate-500 mb-2">{t.expiry}</label>
-                <input type="text" required placeholder="MM/YY" className="w-full bg-black/30 border border-white/10 rounded-lg px-4 py-3 text-white focus:border-luxury-gold focus:outline-none text-center" />
-                </div>
-                <div>
-                <label className="block text-xs uppercase text-slate-500 mb-2">{t.cvc}</label>
-                <input type="text" required placeholder="123" className="w-full bg-black/30 border border-white/10 rounded-lg px-4 py-3 text-white focus:border-luxury-gold focus:outline-none text-center" />
-                </div>
-            </div>
-            
-            <button 
-                type="submit"
-                disabled={isProcessing}
-                className="w-full bg-luxury-gold text-black py-4 uppercase tracking-widest font-semibold hover:bg-white transition-all flex items-center justify-center gap-2 mt-4 disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-                {isProcessing ? (
-                <span className="flex items-center gap-2"><span className="animate-spin text-xl">⟳</span> {t.processing}</span>
-                ) : (
-                <span className="flex items-center gap-2"><Lock className="w-4 h-4" /> {t.pay}</span>
-                )}
-            </button>
-            
-            <p className="text-center text-[10px] text-slate-600 uppercase tracking-wider">
-                Secure Payment Encrypted via SSL
-            </p>
-            </form>
-
-            <div className="relative flex py-5 items-center">
-                <div className="flex-grow border-t border-white/10"></div>
-                <span className="flex-shrink-0 mx-4 text-slate-500 text-[10px] uppercase tracking-widest">{t.orPlatform}</span>
-                <div className="flex-grow border-t border-white/10"></div>
-            </div>
-
-            <a 
-                href="https://www.airbnb.com" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="w-full bg-[#FF385C] hover:bg-[#D90B3E] text-white py-4 rounded-lg uppercase tracking-widest font-semibold transition-all flex items-center justify-center gap-3"
-            >
-            <svg className="w-6 h-6 fill-current" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" style={{display: 'block', height: '24px', width: '24px', fill: 'currentcolor'}}><path d="M16 1c2.008 0 3.463.963 4.751 3.269l.533 1.025c.198.375.406.796.626 1.249.205-.427.398-.822.59-1.187A13.435 13.435 0 0 1 23.472 3.8l.525-.494c1.693-1.576 3.69-2.062 5.37-1.289 1.545.71 2.368 2.316 2.368 4.66 0 4.198-3.328 10.609-13.82 17.656a3.975 3.975 0 0 1-3.83 0C3.608 17.29 0 10.985 0 6.686 0 4.34.823 2.735 2.368 2.025c1.68-.773 3.677-.287 5.37 1.289l.526.494a13.435 13.435 0 0 1 1.002 1.567c.192.365.385.76.59 1.187.22-.453.428-.874.626-1.25L11.25 4.27C12.537 1.963 13.992 1 16 1zm0 2c-1.239 0-2.053.539-2.987 2.21l-.523 1.008c-.193.365-.403.79-.623 1.25-.236.49-.46 1.033-.674 1.554-.627 1.531-1.25 3.054-2.667 3.054-.53 0-.964-.176-1.267-.534-.403-.475-.466-1.137-.107-1.877.294-.606.883-1.398 1.98-2.67.653-.756 1.164-1.366 1.542-1.92.51-.745.836-1.55.836-2.075 0-.649-.556-1.36-1.332-1.717-.577-.266-1.29-.214-2.137.234-1.272.673-1.776 1.83-1.776 3.493 0 3.395 2.87 9.07 12.004 15.22a1.988 1.988 0 0 0 1.916 0c9.135-6.15 12.004-11.825 12.004-15.22 0-1.663-.504-2.82-1.776-3.493-.847-.448-1.56-.5-2.137-.234-.776.357-1.332 1.068-1.332 1.717 0 .526.326 1.33.836 2.075.378.554.889 1.164 1.542 1.92 1.097 1.272 1.686 2.064 1.98 2.67.359.74.296 1.402-.107 1.877-.303.358-.737.534-1.267.534-1.417 0-2.04-1.523-2.667-3.054a27.18 27.18 0 0 0-.674-1.554c-.22-.46-.43-.885-.623-1.25l-.523-1.008C18.053 3.539 17.24 3 16 3z"></path></svg>
-            <span>{t.airbnb}</span>
-            </a>
-        </div>
-      </div>
-    </div>
-  );
-
-  const renderConfirmed = () => (
-    <div className="flex flex-col items-center justify-center h-full text-center animate-fade-in-up">
-      <div className="w-20 h-20 bg-green-500/20 rounded-full flex items-center justify-center mb-8">
-        <CheckCircle className="w-10 h-10 text-green-500" />
-      </div>
-      <h2 className="text-luxury-gold text-xs font-bold tracking-[0.3em] uppercase mb-4">{t.success}</h2>
-      <h1 className="text-4xl md:text-5xl font-serif text-white mb-6">{t.confirmed}</h1>
-      <p className="text-slate-400 max-w-md mb-8">
-        {t.confirmMsg}
-      </p>
-      <div className="bg-white/5 border border-white/10 px-8 py-4 rounded-lg mb-12">
-        <span className="block text-xs text-slate-500 uppercase tracking-widest mb-1">Confirmation Code</span>
-        <span className="text-2xl font-mono text-white tracking-widest">GL-{Math.floor(100000 + Math.random() * 900000)}</span>
-      </div>
-      <button 
-        onClick={onClose}
-        className="text-white hover:text-luxury-gold border-b border-transparent hover:border-luxury-gold transition-all pb-1 uppercase tracking-widest text-xs"
-      >
-        {t.return}
-      </button>
-    </div>
-  );
-
-  return (
-    <div className={`fixed inset-0 z-[100] flex items-center justify-center p-4 transition-opacity duration-700 ${visible ? 'opacity-100' : 'opacity-0'}`}>
-      <div className="absolute inset-0 bg-black/95 backdrop-blur-xl" onClick={onClose}></div>
-      
-      <div className={`relative w-full max-w-5xl h-[90vh] bg-luxury-900 border border-white/10 rounded-xl overflow-hidden shadow-2xl flex flex-col transition-all duration-700 transform ${visible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
-        
-        {/* Header (Hidden on confirmation screen for clean look) */}
-        {step !== 'confirmed' && (
-          <button 
-            onClick={onClose}
-            className="absolute top-6 right-6 z-20 p-2 bg-black/40 hover:bg-white hover:text-black rounded-full text-white transition-colors"
-          >
-            <X className="w-6 h-6" />
-          </button>
-        )}
-
-        <div className="flex-1 p-8 md:p-16 overflow-y-auto custom-scrollbar">
-          {step === 'type' && renderTypeSelection()}
-          {step === 'date' && renderDateSelection()}
-          {step === 'payment' && renderPayment()}
-          {step === 'confirmed' && renderConfirmed()}
-        </div>
-
-      </div>
-    </div>
-  );
-};
-
-export default ReservationModal;
+                <CreditCard className="absolute
