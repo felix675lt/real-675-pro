@@ -29,7 +29,7 @@ const Gallery: React.FC<GalleryProps> = ({ onReserve, language }) => {
       details: t.rooms[1].detail,
       imageUrl: "https://images.unsplash.com/photo-1560624052-449f5ddf0c31?q=80&w=1000&auto=format&fit=crop",
       price: t.rooms[1].price,
-      features: ["1st Floor", "Premium Bar", "Snacks"]
+      features: ["1st Floor", "Premium Bar", "Maintenance"]
     },
     {
       id: '3',
