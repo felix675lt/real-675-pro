@@ -46,14 +46,14 @@ export const translations: Record<Language, any> = {
         },
         {
           title: "The Paddock Lounge",
-          desc: "Located on the 1st floor. An exclusive social hub offering curated drinks and professional vehicle maintenance.",
-          detail: "Located on the ground floor (1F), The Paddock is the communal soul of the Glass Room.\n\nAtmosphere:\nDark, moody, and intimate.\n\nService Bay:\nWhile you relax with a rare scotch, our certified technicians perform essential maintenance, tire pressure optimization, and detailing on your vehicle.\n\nFood & Beverage:\nGuests enjoy complimentary access to a curated selection of spirits and artisanal coffee.",
+          desc: "Located on the 1st floor. An exclusive social hub where you can enjoy curated drinks and premium snacks.",
+          detail: "Located on the ground floor (1F), The Paddock is the communal soul of the Glass Room.\n\nAtmosphere:\nDark, moody, and intimate.\n\nFood & Beverage:\nGuests enjoy complimentary access to a curated selection of rare scotches, cognacs, and artisanal coffee.",
           price: "Access Included"
         },
         {
           title: "Redline Zone",
           desc: "Located on the 2nd floor. Recharge with a private sauna session or engage in high-octane excitement.",
-          detail: "Occupying the entire 2nd floor, the Redline Zone is a dual-purpose facility.\n\nGaming Arena:\nFeatures two high-spec PC gaming stations and racing simulators.\n\nWellness Suite:\nReset your autonomic nervous system in our traditional cedar-lined Finnish sauna.",
+          detail: "Occupying the entire 2nd floor, the Redline Zone is a dual-purpose facility.\n\nArena de Juegos:\nCuenta con dos estaciones de juegos de PC de alta especificación y simuladores de carreras.\n\nSuite de Bienestar:\nRestablezca su sistema nervioso autónomo en nuestra sauna finlandesa tradicional forrada de cedro.",
           price: "Access Included"
         }
       ]
@@ -140,8 +140,8 @@ export const translations: Record<Language, any> = {
         },
         {
           title: "패독 라운지",
-          desc: "1층 위치. 엄선된 음료와 프리미엄 차량 정비 서비스를 제공하는 소셜 허브입니다.",
-          detail: "1층(1F)에 위치한 패독은 글래스 룸의 소셜 중심지입니다.\n\n분위기:\n어둡고 무드 있으며 친밀합니다.\n\n서비스 베이:\n라운지에서 휴식을 취하는 동안 전문 테크니션이 차량의 필수 점검, 공기압 체크 및 디테일링 서비스를 수행합니다.\n\n식음료:\n희귀한 스카치, 코냑, 아티장 커피를 무료로 즐기실 수 있습니다.",
+          desc: "1층 위치. 엄선된 음료와 프리미엄 스낵을 즐길 수 있는 익스클루시브 소셜 허브입니다.",
+          detail: "1층(1F)에 위치한 패독은 글래스 룸의 소셜 중심지입니다.\n\n분위기:\n어둡고 무드 있으며 친밀합니다.\n\n식음료:\n희귀한 스카치, 코냑, 아티장 커피를 무료로 즐기실 수 있습니다.",
           price: "입장 포함"
         },
         {
@@ -234,8 +234,8 @@ export const translations: Record<Language, any> = {
         },
         {
           title: "パドック・ラウンジ",
-          desc: "1階に位置。厳選されたドリンクと専門的な車両メンテナンスを提供するソーシャルハブ。",
-          detail: "1階（1F）にあるパドックは、Glass Roomの社交の中心です。\n\n雰囲気:\nダークでムーディー、そして親密。\n\nサービスベイ：\nくつろいでいる間に、認定技術者が車両の必須メンテナンスとディテーリングを行います。\n\n飲食:\n厳選されたスコッチ、コニャック、職人技のコーヒーを無料でお楽しみいただけます。",
+          desc: "1階に位置。厳選されたドリンクとプレミアムスナックを楽しめる専用ソーシャルハブ。",
+          detail: "1階（1F）にあるパドックは、Glass Roomの社交の中心です。\n\n雰囲気:\nダークでムーディー、そして親密。\n\n飲食:\n厳選されたスコッチ、コニャック、職人技のコーヒーを無料でお楽しみいただけます。",
           price: "アクセス込み"
         },
         {
@@ -328,8 +328,8 @@ export const translations: Record<Language, any> = {
         },
         {
           title: "围场休息室",
-          desc: "位于1楼。一个提供精选饮品和专业车辆维护的专属社交中心。",
-          detail: "位于一楼（1F）的围场是 Glass Room 的社交灵魂。\n\n氛围：\n黑暗、情绪化且亲密。\n\n服务区：\n当您休息时，我们认证的技术人员会对您的车辆进行必要的维护和美容。\n\n餐饮：\n客人可免费享用精选的稀有威士忌、干邑白兰地和手工咖啡。",
+          desc: "位于1楼。一个专属社交中心，您可以在此享用精选饮品和优质小吃。",
+          detail: "位于一楼（1F）的围场是 Glass Room 的社交灵魂。\n\n氛围：\n黑暗、情绪化且亲密。\n\n餐饮：\n客人可免费享用精选的稀有威士忌、干邑白兰地和手工咖啡。",
           price: "包含访问权限"
         },
         {
@@ -422,8 +422,8 @@ export const translations: Record<Language, any> = {
         },
         {
           title: "The Paddock Lounge",
-          desc: "Ubicado en el 1er piso. Un centro social exclusivo que ofrece bebidas curadas y mantenimiento profesional de vehículos.",
-          detail: "Ubicado en la planta baja (1F), The Paddock es el alma comunitaria de Glass Room.\n\nAtmósfera:\nOscura, melancólica e íntima.\n\nBahía de Servicio:\nMientras se relaja, nuestros técnicos certificados realizan mantenimiento esencial y detallado de su vehículo.\n\nAlimentos y Bebidas:\nLos huéspedes disfrutan de acceso gratuito a una selección curada de whiskies raros, coñacs y café artesanal.",
+          desc: "Ubicado en el 1er piso. Un centro social exclusivo donde puede disfrutar de bebidas curadas y bocadillos premium.",
+          detail: "Ubicado en la planta baja (1F), The Paddock es el alma comunitaria de Glass Room.\n\nAtmósfera:\nOscura, melancólica e íntima.\n\nAlimentos y Bebidas:\nLos huéspedes disfrutan de acceso gratuito a una selección curada de whiskies raros, coñacs y café artesanal.",
           price: "Acceso Incluido"
         },
         {
@@ -516,8 +516,8 @@ export const translations: Record<Language, any> = {
         },
         {
           title: "Лаундж Паддок",
-          desc: "Расположен на 1 этаже. Эксклюзивный социальный центр, предлагающий напитки и профессиональное обслуживание автомобилей.",
-          detail: "Расположенный на первом этаже (1F), Паддок является социальной душой Glass Room.\n\nАтмосфера:\nТемная, угрюмая и интимная.\n\nСервисный Отсек:\nПока вы отдыхаете, наши сертифицированные специалисты выполняют необходимое обслуживание и детейлинг вашего автомобиля.\n\nЕда и Напитки:\nГости могут бесплатно насладиться отборными редкими сортами виски, коньяка и авторским кофе.",
+          desc: "Расположен на 1 этаже. Эксклюзивный социальный центр, где можно насладиться отборными напитками и закусками.",
+          detail: "Расположенный на первом этаже (1F), Паддок является социальной душой Glass Room.\n\nАтмосфера:\nТемная, угрюмая и интимная.\n\nЕда и Напитки:\nГости могут бесплатно насладиться отборными редкими сортами виски, коньяка и авторским кофе.",
           price: "Доступ Включен"
         },
         {
