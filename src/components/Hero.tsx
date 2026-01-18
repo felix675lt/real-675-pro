@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { ChevronDown, Lock, Unlock } from 'lucide-react';
+import { ChevronDown, Lock } from 'lucide-react';
 import { Language } from '../types';
 import { translations } from '../translations';
 
@@ -30,7 +30,7 @@ const Hero: React.FC<HeroProps> = ({ language }) => {
 
   return (
     <section className="relative w-full h-screen overflow-hidden bg-luxury-900">
-      {/* Background Video - Forest Road Drive (Revealed when doors open) */}
+      {/* Background Video */}
       <div className="absolute inset-0 w-full h-full z-0">
         <video 
           autoPlay 
@@ -43,7 +43,6 @@ const Hero: React.FC<HeroProps> = ({ language }) => {
           <source src="https://videos.pexels.com/video-files/5453716/5453716-hd_1920_1080_25fps.mp4" type="video/mp4" />
         </video>
         
-        {/* Dark Overlay for text readability once inside */}
         <div className="absolute inset-0 bg-black/40"></div>
         <div className="absolute inset-0 bg-gradient-to-b from-luxury-900/60 via-transparent to-luxury-900"></div>
       </div>
@@ -61,7 +60,6 @@ const Hero: React.FC<HeroProps> = ({ language }) => {
             isOpen ? '-translate-y-full' : 'translate-y-0'
           }`}
         >
-          {/* Texture/Pattern for the door */}
           <div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-slate-800 to-black"></div>
         </div>
 
@@ -75,7 +73,7 @@ const Hero: React.FC<HeroProps> = ({ language }) => {
         </div>
       </div>
 
-      {/* Enter Button (Visible only when closed) */}
+      {/* Enter Button */}
       <div className={`absolute inset-0 z-50 flex items-center justify-center transition-opacity duration-500 ${isOpen ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
         <button 
           onClick={handleEnter}
