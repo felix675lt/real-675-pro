@@ -1,4 +1,4 @@
-import { GoogleGenerativeAI, ChatSession } from "@google/generative-ai";
+import { GoogleGenAI, Chat, GenerateContentResponse } from "@google/genai";
 
 const SYSTEM_INSTRUCTION = `
 You are "Jarvis", the AI Concierge for "The Glass Room", an ultra-luxury garage-style hotel.
@@ -30,27 +30,14 @@ INSTRUCTIONS:
 - Do not mention real dates or bookings, just say "I can check availability for you immediately".
 `;
 
-let chatSession: ChatSession | null = null;
-let genAI: GoogleGenerativeAI | null = null;
+let chatSession: Chat | null = null;
 
 export const initChat = () => {
-  // 웹 환경(Vite)에 맞는 API 키 가져오기
-  const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
-  
-  if (!apiKey) {
-    console.warn("Gemini API Key is missing. AI features will be disabled.");
-    return;
-  }
-
-  genAI = new GoogleGenerativeAI(apiKey);
-  const model = genAI.getGenerativeModel({ 
-    model: "gemini-1.5-flash", 
-    systemInstruction: SYSTEM_INSTRUCTION 
-  });
-
-  chatSession = model.startChat({
-    history: [],
-    generationConfig: {
+  const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+  chatSession = ai.chats.create({
+    model: 'gemini-3-flash-preview',
+    config: {
+      systemInstruction: SYSTEM_INSTRUCTION,
       temperature: 0.7,
     },
   });
@@ -64,11 +51,10 @@ export const sendMessageToGemini = async (message: string): Promise<string> => {
   try {
     if (!chatSession) throw new Error("Chat session not initialized");
     
-    const result = await chatSession.sendMessage(message);
-    const response = await result.response;
-    return response.text();
+    const result: GenerateContentResponse = await chatSession.sendMessage({ message });
+    return result.text || "I apologize, I am momentarily disconnected from the main server.";
   } catch (error) {
     console.error("Gemini Error:", error);
-    return "I apologize, I am momentarily disconnected from the main server. Please check your API Key configuration.";
+    return "My systems are currently undergoing maintenance. Please contact the front desk directly.";
   }
 };
