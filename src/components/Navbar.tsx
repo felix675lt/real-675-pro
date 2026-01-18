@@ -50,7 +50,7 @@ const Navbar: React.FC<NavbarProps> = ({
       }`}
     >
       <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
           <Key className="w-6 h-6 text-luxury-gold" />
           <span className="font-serif text-2xl font-bold tracking-widest text-white">GLASS ROOM</span>
         </div>
@@ -116,7 +116,6 @@ const Navbar: React.FC<NavbarProps> = ({
 
         {/* Mobile Toggle */}
         <div className="flex items-center gap-4 md:hidden">
-            {/* Mobile Language Toggle (Simple Cycle) */}
             <button 
               onClick={() => {
                 const currentIndex = languages.findIndex(l => l.code === language);
@@ -140,9 +139,9 @@ const Navbar: React.FC<NavbarProps> = ({
 
       {/* Mobile Menu */}
       {mobileMenuOpen && (
-        <div className="absolute top-full left-0 w-full bg-luxury-900 border-b border-white/10 p-6 flex flex-col gap-4 md:hidden glass-panel">
+        <div className="absolute top-full left-0 w-full bg-luxury-900 border-b border-white/10 p-6 flex flex-col gap-4 md:hidden glass-panel animate-fade-in">
           <button 
-            className="text-lg font-serif text-left" 
+            className="text-lg font-serif text-left hover:text-luxury-gold" 
             onClick={() => {
               setMobileMenuOpen(false);
               onOpenConcept();
@@ -151,7 +150,7 @@ const Navbar: React.FC<NavbarProps> = ({
             {t.concept}
           </button>
           <button 
-            className="text-lg font-serif text-left"
+            className="text-lg font-serif text-left hover:text-luxury-gold"
             onClick={() => {
               setMobileMenuOpen(false);
               onOpenSuites();
@@ -160,7 +159,7 @@ const Navbar: React.FC<NavbarProps> = ({
             {t.suites}
           </button>
           <button 
-            className="text-lg font-serif text-left"
+            className="text-lg font-serif text-left hover:text-luxury-gold"
             onClick={() => {
               setMobileMenuOpen(false);
               onOpenAmenities();
@@ -173,7 +172,7 @@ const Navbar: React.FC<NavbarProps> = ({
               setMobileMenuOpen(false);
               onReserve();
             }}
-            className="bg-luxury-gold text-black py-3 uppercase tracking-widest mt-4"
+            className="bg-luxury-gold text-black py-3 uppercase tracking-widest mt-4 font-bold"
           >
             {t.reserve}
           </button>
