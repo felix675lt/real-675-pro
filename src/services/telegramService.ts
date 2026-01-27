@@ -1,4 +1,15 @@
-export const sendTelegramNotification = async (message: string): Promise<boolean> => {
+export interface TelegramUpdate {
+    update_id: number;
+    message?: {
+        message_id: number;
+        text: string;
+        reply_to_message?: {
+            message_id: number;
+        };
+    };
+}
+
+export const sendTelegramNotification = async (message: string): Promise<number | null> => {
     try {
         const response = await fetch('/api/telegram', {
             method: 'POST',
@@ -10,12 +21,26 @@ export const sendTelegramNotification = async (message: string): Promise<boolean
 
         if (!response.ok) {
             console.error('Failed to send notification');
-            return false;
+            return null;
         }
 
-        return true;
+        const data = await response.json();
+        return data.result?.message_id || null;
     } catch (error) {
         console.error('Error sending notification:', error);
-        return false;
+        return null;
+    }
+};
+
+export const checkNewMessages = async (): Promise<TelegramUpdate[]> => {
+    try {
+        const response = await fetch('/api/poll');
+        if (!response.ok) return [];
+
+        const data = await response.json();
+        return data.result || [];
+    } catch (error) {
+        console.error('Error polling messages:', error);
+        return [];
     }
 };

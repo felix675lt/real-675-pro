@@ -54,6 +54,35 @@ export default defineConfig(({ mode }) => {
               next();
             }
           });
+
+          // 2. Poll Updates Mock
+          server.middlewares.use('/api/poll', async (req, res, next) => {
+            if (req.method === 'GET') {
+              try {
+                const botToken = env.TELEGRAM_BOT_TOKEN;
+                if (!botToken) {
+                  console.log('TG Poll: No Token');
+                  res.statusCode = 500;
+                  res.end(JSON.stringify({ error: 'Missing Token' }));
+                  return;
+                }
+
+                const telegramUrl = `https://api.telegram.org/bot${botToken}/getUpdates`;
+                const response = await fetch(telegramUrl);
+                const data = await response.json();
+
+                res.statusCode = response.ok ? 200 : 500;
+                res.setHeader('Content-Type', 'application/json');
+                res.end(JSON.stringify(data));
+              } catch (error) {
+                console.error('TG Poll Error:', error);
+                res.statusCode = 500;
+                res.end(JSON.stringify({ error: 'Poll Error' }));
+              }
+            } else {
+              next();
+            }
+          });
         },
       },
     ],

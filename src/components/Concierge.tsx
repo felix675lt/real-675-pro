@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { MessageSquare, Send, X, Sparkles, Headset, User, Bell, Lock } from 'lucide-react';
 import { sendMessageToGemini, initChat } from '../services/geminiService';
-import { sendTelegramNotification } from '../services/telegramService';
+import { sendTelegramNotification, checkNewMessages } from '../services/telegramService';
 import { ChatMessage } from '../types';
 
 interface ConciergeProps {
@@ -15,7 +15,10 @@ const Concierge: React.FC<ConciergeProps> = ({ isOpen, setIsOpen }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isLiveMode, setIsLiveMode] = useState(false);
   const [isAdminView, setIsAdminView] = useState(false); // Simulates the staff view
+  const [myMessageIds, setMyMessageIds] = useState<number[]>([]); // Track IDs of messages I sent
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+
 
   // Initialize chat on load (or first open)
   useEffect(() => {
@@ -37,10 +40,36 @@ const Concierge: React.FC<ConciergeProps> = ({ isOpen, setIsOpen }) => {
     if (isOpen) scrollToBottom();
   }, [messages, isOpen]);
 
+  // POLL FOR NEW MESSAGES (Live Mode Only)
+  useEffect(() => {
+    if (!isLiveMode) return;
+
+    const interval = setInterval(async () => {
+      const updates = await checkNewMessages();
+
+      updates.forEach(update => {
+        // Filter: Only show messages that are Replies to MY messages
+        if (update.message?.reply_to_message && myMessageIds.includes(update.message.reply_to_message.message_id)) {
+          // Check if we already have this message (by content, simple check)
+          setMessages(prev => {
+            const alreadyExists = prev.some(m => m.text === update.message!.text && m.role === 'agent');
+            if (alreadyExists) return prev;
+
+            // Play sound
+            triggerNotification();
+            return [...prev, { role: 'agent', text: update.message!.text }];
+          });
+        }
+      });
+    }, 3000); // Poll every 3 seconds
+
+    return () => clearInterval(interval);
+  }, [isLiveMode, myMessageIds]);
+
   const triggerNotification = () => {
     if ("Notification" in window && Notification.permission === "granted") {
       new Notification("GLASS ROOM CONCIERGE", {
-        body: "A guest has requested live support.",
+        body: "New message from Front Desk",
         icon: "/favicon.ico" // assuming favicon exists, otherwise browser default
       });
       // Play a subtle sound
@@ -50,20 +79,16 @@ const Concierge: React.FC<ConciergeProps> = ({ isOpen, setIsOpen }) => {
     }
   };
 
-  const requestLiveAgent = () => {
+  const requestLiveAgent = async () => {
     setIsLiveMode(true);
-    setMessages(prev => [...prev, { role: 'system', text: "Connecting you to a live specialist..." }]);
+    setMessages(prev => [...prev, { role: 'system', text: "Connecting you to a live specialist... (Please wait for reply)" }]);
 
     // Notify Admin via Telegram
-    sendTelegramNotification("🔔 GUEST REQUEST: Client is requesting a live agent connection.");
+    const msgId = await sendTelegramNotification("🔔 GUEST REQUEST: Client is requesting a live agent connection.");
+    if (msgId) setMyMessageIds(prev => [...prev, msgId]);
 
     // Simulate notifying the admin
-    triggerNotification();
-
-    // Simulate connection delay
-    setTimeout(() => {
-      setMessages(prev => [...prev, { role: 'agent', text: "This is the Front Desk. I see you need assistance. How can I help you directly?" }]);
-    }, 1500);
+    // triggerNotification(); // Removed self-notification
   };
 
   const handleSend = async () => {
@@ -83,8 +108,8 @@ const Concierge: React.FC<ConciergeProps> = ({ isOpen, setIsOpen }) => {
 
     // If Live Mode is active, we don't call AI. We wait for Admin to reply (simulated via AdminView or just waiting)
     if (isLiveMode) {
-      sendTelegramNotification(`👤 Guest: ${userMsg}`);
-      // In a real app, this would send via WebSocket to the admin dashboard
+      const msgId = await sendTelegramNotification(`👤 Guest: ${userMsg}`);
+      if (msgId) setMyMessageIds(prev => [...prev, msgId]);
       return;
     }
 
