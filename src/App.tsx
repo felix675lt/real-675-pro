@@ -15,22 +15,32 @@ const App: React.FC = () => {
   const [isConceptOpen, setIsConceptOpen] = useState(false);
   const [isSuitesOpen, setIsSuitesOpen] = useState(false);
   const [isAmenitiesOpen, setIsAmenitiesOpen] = useState(false);
+  const [amenitiesInitialTab, setAmenitiesInitialTab] = useState<'amenities' | 'gateway'>('amenities');
   const [isReservationOpen, setIsReservationOpen] = useState(false);
   const [language, setLanguage] = useState<Language>('en');
 
   const openChat = () => setIsChatOpen(true);
-  const openConcept = () => setIsConceptOpen(true);
-  const openSuites = () => setIsSuitesOpen(true);
-  const openAmenities = () => setIsAmenitiesOpen(true);
+  const openAmenities = (tab: 'amenities' | 'gateway' = 'amenities') => {
+    setAmenitiesInitialTab(tab);
+    setIsAmenitiesOpen(true);
+  };
   const openReservation = () => setIsReservationOpen(true);
+
+  const scrollToSection = (id: string) => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
 
   return (
     <div className="min-h-screen bg-luxury-900 text-slate-200">
-      <Navbar 
-        onReserve={openReservation} 
-        onOpenConcept={openConcept}
-        onOpenSuites={openSuites}
-        onOpenAmenities={openAmenities}
+      <Navbar
+        onReserve={openReservation}
+        onOpenConcept={() => scrollToSection('concept')}
+        onOpenSuites={() => scrollToSection('suites')}
+        onOpenAmenities={() => openAmenities('amenities')}
+        onOpenGateway={() => openAmenities('gateway')}
         language={language}
         setLanguage={setLanguage}
       />
@@ -38,7 +48,7 @@ const App: React.FC = () => {
         <Hero language={language} />
         <Features language={language} />
         <Gallery onReserve={openReservation} language={language} />
-        
+
         {/* Footer Section */}
         <footer className="bg-black py-16 border-t border-white/10">
           <div className="max-w-7xl mx-auto px-6 text-center">
@@ -54,13 +64,24 @@ const App: React.FC = () => {
           </div>
         </footer>
       </main>
-      
+
       {/* Modals */}
       <ConceptStory isOpen={isConceptOpen} onClose={() => setIsConceptOpen(false)} />
       <SuitesModal isOpen={isSuitesOpen} onClose={() => setIsSuitesOpen(false)} onReserve={openReservation} />
-      <AmenitiesModal isOpen={isAmenitiesOpen} onClose={() => setIsAmenitiesOpen(false)} onReserve={openReservation} />
-      <ReservationModal isOpen={isReservationOpen} onClose={() => setIsReservationOpen(false)} language={language} />
-      
+      <AmenitiesModal
+        isOpen={isAmenitiesOpen}
+        onClose={() => setIsAmenitiesOpen(false)}
+        onReserve={openReservation}
+        language={language}
+        initialTab={amenitiesInitialTab}
+      />
+      <ReservationModal
+        isOpen={isReservationOpen}
+        onClose={() => setIsReservationOpen(false)}
+        language={language}
+        onContactConcierge={openChat}
+      />
+
       <Concierge isOpen={isChatOpen} setIsOpen={setIsChatOpen} />
     </div>
   );

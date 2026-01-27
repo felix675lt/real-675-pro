@@ -6,6 +6,7 @@ export const translations: Record<Language, any> = {
       concept: "Concept",
       suites: "Suites",
       amenities: "Amenities",
+      gateway: "Gateway",
       reserve: "Reserve"
     },
     hero: {
@@ -46,17 +47,37 @@ export const translations: Record<Language, any> = {
         },
         {
           title: "The Paddock Lounge",
-          desc: "Located on the 1st floor. An exclusive social hub where you can enjoy curated drinks and premium snacks.",
-          detail: "Located on the ground floor (1F), The Paddock is the communal soul of the Glass Room.\n\nAtmosphere:\nDark, moody, and intimate.\n\nFood & Beverage:\nGuests enjoy complimentary access to a curated selection of rare scotches, cognacs, and artisanal coffee.",
+          desc: "Located on the 1st floor. An exclusive social hub offering curated drinks and professional vehicle maintenance.",
+          detail: "Located on the ground floor (1F), The Paddock is the communal soul of the Glass Room.\n\nAtmosphere:\nDark, moody, and intimate.\n\nService Bay:\nWhile you relax with a rare scotch, our certified technicians perform essential maintenance, tire pressure optimization, and detailing on your vehicle.\n\nFood & Beverage:\nGuests enjoy complimentary access to a curated selection of spirits and artisanal coffee.",
           price: "Access Included"
         },
         {
           title: "Redline Zone",
           desc: "Located on the 2nd floor. Recharge with a private sauna session or engage in high-octane excitement.",
-          detail: "Occupying the entire 2nd floor, the Redline Zone is a dual-purpose facility.\n\nArena de Juegos:\nCuenta con dos estaciones de juegos de PC de alta especificación y simuladores de carreras.\n\nSuite de Bienestar:\nRestablezca su sistema nervioso autónomo en nuestra sauna finlandesa tradicional forrada de cedro.",
+          detail: "Occupying the entire 2nd floor, the Redline Zone is a dual-purpose facility.\n\nGaming Arena:\nFeatures two high-spec PC gaming stations and racing simulators.\n\nWellness Suite:\nReset your autonomic nervous system in our traditional cedar-lined Finnish sauna.",
           price: "Access Included"
         }
       ]
+    },
+    gateway: {
+      title: "Gateway Service",
+      subtitle: "One-stop solution for Japan/Russia overlanders",
+      desc: "Studio 675 handles complex temporary import documents (T.I.D), customs deposits, and mandatory insurance.",
+      list: [
+        "Customs Clearance Agency",
+        "Mandatory Korean Insurance",
+        "Hi-Pass & Prepaid Card Rental",
+        "Busan Port Pickup Service"
+      ],
+      formTitle: "Request Entry Service",
+      fields: {
+        name: "Full Name (as per Passport)",
+        email: "Email Address",
+        vehicle: "Vehicle Type",
+        plate: "Vehicle Plate Number",
+        date: "Arrival Date"
+      },
+      button: "GET A QUOTE"
     },
     reservation: {
       step1: "Step 01",
@@ -72,8 +93,10 @@ export const translations: Record<Language, any> = {
       dateDetails: "Date & Details",
       back: "Back",
       checkin: "Check-in Time",
+      customCheckin: "Need to adjust check-in time? Contact Concierge",
       guests: "Guest Count",
       maxGuests: "Max 3 guests per suite",
+      includeGateway: "Include Gateway Service (Int'l Vehicle Entry)",
       continue: "Continue to Payment",
       step3: "Step 03",
       secure: "Secure Reservation",
@@ -100,6 +123,7 @@ export const translations: Record<Language, any> = {
       concept: "컨셉",
       suites: "스위트",
       amenities: "어메니티",
+      gateway: "게이트웨이",
       reserve: "예약하기"
     },
     hero: {
@@ -140,8 +164,8 @@ export const translations: Record<Language, any> = {
         },
         {
           title: "패독 라운지",
-          desc: "1층 위치. 엄선된 음료와 프리미엄 스낵을 즐길 수 있는 익스클루시브 소셜 허브입니다.",
-          detail: "1층(1F)에 위치한 패독은 글래스 룸의 소셜 중심지입니다.\n\n분위기:\n어둡고 무드 있으며 친밀합니다.\n\n식음료:\n희귀한 스카치, 코냑, 아티장 커피를 무료로 즐기실 수 있습니다.",
+          desc: "1층 위치. 엄선된 음료와 프리미엄 차량 정비 서비스를 제공하는 소셜 허브입니다.",
+          detail: "1층(1F)에 위치한 패독은 글래스 룸의 소셜 중심지입니다.\n\n분위기:\n어둡고 무드 있으며 친밀합니다.\n\n서비스 베이:\n라운지에서 휴식을 취하는 동안 전문 테크니션이 차량의 필수 점검, 공기압 체크 및 디테일링 서비스를 수행합니다.\n\n식음료:\n희귀한 스카치, 코냑, 아티장 커피를 무료로 즐기실 수 있습니다.",
           price: "입장 포함"
         },
         {
@@ -151,6 +175,26 @@ export const translations: Record<Language, any> = {
           price: "입장 포함"
         }
       ]
+    },
+    gateway: {
+      title: "게이트웨이 서비스",
+      subtitle: "일본/러시아 오버랜더를 위한 원스톱 솔루션",
+      desc: "복잡한 일시수입 서류(T.I.D), 세관 보증금, 의무 보험 가입을 Studio 675가 대행해 드립니다.",
+      list: [
+        "일시 수출입 통관 대행",
+        "한국 의무 보험 가입 (삼성화재)",
+        "하이패스 & 선불카드 대여 패키지",
+        "부산항 픽업 서비스"
+      ],
+      formTitle: "입국 대행 서비스 신청",
+      fields: {
+        name: "성명 (여권 영문명)",
+        email: "이메일 주소",
+        vehicle: "차종 (Vehicle Type)",
+        plate: "차량 번호 (Plate Number)",
+        date: "입국 예정일"
+      },
+      button: "견적 문의하기"
     },
     reservation: {
       step1: "Step 01",
@@ -166,8 +210,10 @@ export const translations: Record<Language, any> = {
       dateDetails: "날짜 및 상세",
       back: "뒤로",
       checkin: "체크인 시간",
+      customCheckin: "입실 시간 조정이 필요하신가요? 컨시어지에 문의하기",
       guests: "게스트 수",
       maxGuests: "스위트당 최대 3명",
+      includeGateway: "일시수입 대행 서비스(게이트웨이) 포함",
       continue: "결제하기",
       step3: "Step 03",
       secure: "예약 확정",
@@ -194,25 +240,26 @@ export const translations: Record<Language, any> = {
       concept: "コンセプト",
       suites: "スイート",
       amenities: "アメニティ",
+      gateway: "ゲートウェイ",
       reserve: "予約する"
     },
     hero: {
       subtitle: "プライベート・ガレージ・スイート",
       title: "THE GLASS ROOM",
       slogan: "Drive In. Zone Out.",
-      desc: "透明なラグジュアリーを体験してください。\nあなたの愛車が、あなただけの聖域で展示されます。",
+      desc: "透明なラグジュアリーを体験してください。\nあなたの愛車が, あなただけの聖域で展示されます。",
       enter: "サンクチュアリへ",
       access: "生体認証アクセス"
     },
     features: {
       concept: "コンセプト",
       title: "ドライバーのための設計",
-      desc: "Glass Roomはラグジュアリーステイを再定義します。車はあなたの一部です。私たちの「ガレージスイート」は、ガラス張りのエリアでガレージと居住空間をつなぎ、愛車が常に主役となるように設計されています。",
+      desc: "Glass Room은 럭셔리 스테이를 재정의합니다. 자동차는 당신의 확장입니다. 우리의 \"개러지 스위트\"는 유리 벽을 통해 거실과 개인 차고를 연결하여, 당신의 애마가 항상 중심에 있도록 설계되었습니다.",
       items: [
-        { title: "完全なプライバシー", desc: "アプリでチェックイン。ガレージへ直接乗り入れ。フロントもカメラも視線もありません。" },
-        { title: "完璧な音響", desc: "全室に防音壁とBang & Olufsenのハイファイオーディオシステムを完備。" },
-        { title: "スマートコントロール", desc: "照明、空調、ガレージドア、ルームサービスをiPadや音声で操作。" },
-        { title: "プレミアムな設備", desc: "フルストックバー、ネスプレッソ・ヴァーチュオ、厳選された葉巻をご用意。" }
+        { title: "完全なプライバシー", desc: "앱으로 체크인하고 차고로 직접 운전해서 들어오세요. 프론트 데스크도, 카메라도, 시선도 없습니다." },
+        { title: "完璧な音響", desc: "모든 객실에 방음 벽과 고성능 Bang & Olufsen 오디오 시스템이 설치되어 있습니다." },
+        { title: "スマートコントロール", desc: "조명, 실내 온도, 차고 문, 룸서비스를 아이패드나 음성으로 제어하세요." },
+        { title: "プレミアムな設備", desc: "풀 스톡 바, 네스프레소 버츄오, 그리고 엄선된 시가가 준비되어 있습니다." }
       ],
       quote: "\"愛車があなたと同じくらい快適に眠れる唯一のホテル\""
     },
@@ -229,22 +276,42 @@ export const translations: Record<Language, any> = {
         {
           title: "グラス・スイート",
           desc: "1.5階に位置。キングベッド2台と駐車した車のパノラマビューを備えたプライベートな聖域。",
-          detail: "ユニークな1.5階層にあるグラス・スイートは、この施設の中心的建築です。\n\n宿泊:\n1000スレッドカウントのエジプト綿リネンを使用した特大シングルキングベッド2台。\n\n眺望:\n密閉された防音ガラス壁が、リビングエリアとプライベートガレージを隔てています。\n\nバーチャルチューニングスタジオ:\n情熱を遊びに。ガラス越しに車両をスキャンし、ARアプリを使用してパフォーマンスパーツを仮想的に装着できます。",
+          detail: "ユニークな1.5階層にあるグラス・スイートは、この施設の中心的建築です。\n\n宿泊:\n1000スレッドカウントのエジプト綿リネンを使用した特大シングルキングベッド2台。\n\n眺望:\n密閉された防音ガラス壁が、リビングエリアとプライベートガレージを隔てています。\n\nバーチャルチューニングスタジオ:\n情熱を遊びに。ガラス越しに車両をスキャンし, ARアプリを使用してパフォーマンスパーツを仮想的に装着できます。",
           price: "最大3名"
         },
         {
           title: "パドック・ラウンジ",
-          desc: "1階に位置。厳選されたドリンクとプレミアムスナックを楽しめる専用ソーシャルハブ。",
-          detail: "1階（1F）にあるパドックは、Glass Roomの社交の中心です。\n\n雰囲気:\nダークでムーディー、そして親密。\n\n飲食:\n厳選されたスコッチ、コニャック、職人技のコーヒーを無料でお楽しみいただけます。",
+          desc: "1階に位置。厳選されたドリンクと専門的な車両メンテナンスを提供するソーシャルハブ。",
+          detail: "1階（1F）にあるパドックは, Glass Roomの社交の中心です。\n\n雰囲気:\nダークでムーディー、そして親密。\n\nサービスベイ：\nくつろいでいる間に, 認定技術者が車両の必須メンテナンスとディテーリングを行います。\n\n飲食:\n厳選されたスコッチ, コニャック, 職人技のコーヒーを無料でお楽しみいただけます。",
           price: "アクセス込み"
         },
         {
           title: "レッドライン・ゾーン",
-          desc: "2階に位置。プライベートサウナでリチャージするか、ハイオクな興奮に没頭するか。",
-          detail: "2階全体を占めるレッドライン・ゾーンは、アドレナリンと回復のための多目的施設です。\n\nゲーミングアリーナ:\nハイスペックPCとシムレーシングリグを完備。\n\nウェルネススイート:\n伝統的なヒノキのフィンランド式サウナで自律神経をリセット。",
+          desc: "2階に位置。プライベートサ우나でリチャージするか, ハイオクな興奮に没頭するか。",
+          detail: "2階全体を占めるレッドライン・ゾーンは, アドレナリンと回復のための多目的施設です。\n\nゲーミングアリーナ:\nハイスペックPCとシムレーシングリグを完備。\n\nウェルネススイート:\n전통 핀란드식 편백나무 사우나에서 자율 신경계를 재설정하세요.",
           price: "アクセス込み"
         }
       ]
+    },
+    gateway: {
+      title: "ゲートウェイサービス",
+      subtitle: "日本・ロシアのオーバーランダーのためのワンストップソリューション",
+      desc: "Studio 675が複雑な一時輸入書類(T.I.D), 税関保証金, 義務保険への加入を代行します。",
+      list: [
+        "一時輸出入通関代行",
+        "韓国義務保険加入代行",
+        "ハイパス＆プリペイドカード貸出",
+        "釜山港ピックアップサービス"
+      ],
+      formTitle: "入国サービスのリクエスト",
+      fields: {
+        name: "氏名 (パスポート表記)",
+        email: "メールアドレス",
+        vehicle: "車種",
+        plate: "車両番号",
+        date: "入国予定日"
+      },
+      button: "見積もりを依頼"
     },
     reservation: {
       step1: "Step 01",
@@ -260,8 +327,10 @@ export const translations: Record<Language, any> = {
       dateDetails: "日時と詳細",
       back: "戻る",
       checkin: "チェックイン時間",
+      customCheckin: "入室時間の調整が必要ですか？コンシェルジュに問い合わせる",
       guests: "ゲスト人数",
       maxGuests: "1スイート最大3名",
+      includeGateway: "一時輸入代行サービス（ゲートウェイ）を含む",
       continue: "支払いに進む",
       step3: "Step 03",
       secure: "予約の確保",
@@ -288,6 +357,7 @@ export const translations: Record<Language, any> = {
       concept: "理念",
       suites: "套房",
       amenities: "设施",
+      gateway: "入口服务",
       reserve: "预订"
     },
     hero: {
@@ -328,17 +398,37 @@ export const translations: Record<Language, any> = {
         },
         {
           title: "围场休息室",
-          desc: "位于1楼。一个专属社交中心，您可以在此享用精选饮品和优质小吃。",
-          detail: "位于一楼（1F）的围场是 Glass Room 的社交灵魂。\n\n氛围：\n黑暗、情绪化且亲密。\n\n餐饮：\n客人可免费享用精选的稀有威士忌、干邑白兰地和手工咖啡。",
+          desc: "位于1楼。一个提供精选饮品和专业车辆维护的专属社交中心。",
+          detail: "位于一楼（1F）的围场是 Glass Room 的社交灵魂。\n\n氛围：\n黑暗、情绪化且亲密。\n\n服务区：\n当您休息时，我们认证的技术人员会对您的车辆进行必要的维护和美容。\n\n餐饮：\n客人可免费享用精选的稀有威士忌、干邑白兰地和手工咖啡。",
           price: "包含访问权限"
         },
         {
           title: "红线区",
           desc: "位于2楼。通过私人桑拿恢复活力，或参与高强度的刺激活动。",
-          detail: "红线区占据整个2楼，是专为肾上腺素和恢复而设的双重用途设施。\n\n游戏竞技场：\n配备两台高规格 PC 游戏站和模拟赛车设备。\n\n健康套房：\n在我们传统的雪松衬里芬兰桑拿房中重置您的自主神经系统。",
+          detail: "红线区占据整个2楼, 是专为肾上腺素和恢复而设的双重用途设施。\n\n游戏竞技场：\n配备两台高规格 PC 游戏站和模拟赛车设备。\n\n健康套房：\n在我们传统的雪松衬里芬兰桑拿房中重置您的自主神经系统。",
           price: "包含访问权限"
         }
       ]
+    },
+    gateway: {
+      title: "入口服务",
+      subtitle: "日本/俄罗斯越野者的站式解决方案",
+      desc: "Studio 675 代办复杂的临时进口文件 (T.I.D), 海关保证金和强制保险。",
+      list: [
+        "临时进出口清关代理",
+        "韩国强制保险办理",
+        "Hi-Pass 和预付卡套餐租赁",
+        "釜山港接送服务"
+      ],
+      formTitle: "申请入境服务",
+      fields: {
+        name: "全名 (同护照英文名)",
+        email: "电子邮箱",
+        vehicle: "车型",
+        plate: "车牌号码",
+        date: "预计入境日期"
+      },
+      button: "获取报价"
     },
     reservation: {
       step1: "Step 01",
@@ -354,8 +444,10 @@ export const translations: Record<Language, any> = {
       dateDetails: "日期与详情",
       back: "返回",
       checkin: "入住时间",
+      customCheckin: "需要调整入住时间？联系礼宾部",
       guests: "客人数",
       maxGuests: "每套房最多3人",
+      includeGateway: "包含临时进口代办服务 (Gateway)",
       continue: "继续支付",
       step3: "Step 03",
       secure: "安全预订",
@@ -382,6 +474,7 @@ export const translations: Record<Language, any> = {
       concept: "Concepto",
       suites: "Suites",
       amenities: "Servicios",
+      gateway: "Entrada",
       reserve: "Reservar"
     },
     hero: {
@@ -422,8 +515,8 @@ export const translations: Record<Language, any> = {
         },
         {
           title: "The Paddock Lounge",
-          desc: "Ubicado en el 1er piso. Un centro social exclusivo donde puede disfrutar de bebidas curadas y bocadillos premium.",
-          detail: "Ubicado en la planta baja (1F), The Paddock es el alma comunitaria de Glass Room.\n\nAtmósfera:\nOscura, melancólica e íntima.\n\nAlimentos y Bebidas:\nLos huéspedes disfrutan de acceso gratuito a una selección curada de whiskies raros, coñacs y café artesanal.",
+          desc: "Ubicado en el 1er piso. Un centro social exclusivo que ofrece bebidas curadas and mantenimiento profesional de vehículos.",
+          detail: "Ubicado en la planta baja (1F), The Paddock es el alma comunitaria de Glass Room.\n\nAtmósfera:\nOscura, melancólica e íntima.\n\nBahía de Servicio:\nMientras se relaja, nuestros técnicos certificados realizan mantenimiento esencial y detallado de su vehículo.\n\nAlimentos y Bebidas:\nLos huéspedes disfrutan de acceso gratuito a una selección curada de whiskies raros, coñacs y café artesanal.",
           price: "Acceso Incluido"
         },
         {
@@ -433,6 +526,26 @@ export const translations: Record<Language, any> = {
           price: "Acceso Incluido"
         }
       ]
+    },
+    gateway: {
+      title: "Servicio Gateway",
+      subtitle: "Solución integral para overlanders de Japón/Rusia",
+      desc: "Studio 675 se encarga de los complejos documentos de importación temporal (T.I.D) y el seguro obligatorio.",
+      list: [
+        "Despacho de aduanas temporal",
+        "Seguro obligatorio coreano",
+        "Alquiler de Hi-Pass y tarjetas",
+        "Recogida en el puerto de Busan"
+      ],
+      formTitle: "Solicitar servicio de entrada",
+      fields: {
+        name: "Nombre completo (según pasaporte)",
+        email: "Correo electrónico",
+        vehicle: "Tipo de vehículo",
+        plate: "Número de placa",
+        date: "Fecha de llegada"
+      },
+      button: "OBTENER COTIZACIÓN"
     },
     reservation: {
       step1: "Paso 01",
@@ -448,8 +561,10 @@ export const translations: Record<Language, any> = {
       dateDetails: "Fecha y Detalles",
       back: "Atrás",
       checkin: "Hora de Check-in",
+      customCheckin: "¿Necesita ajustar la hora de entrada? Contacte al Conserje",
       guests: "Huéspedes",
       maxGuests: "Max 3 huéspedes por suite",
+      includeGateway: "Incluir servicio de importación temporal (Gateway)",
       continue: "Continuar al Pago",
       step3: "Paso 03",
       secure: "Asegurar Reserva",
@@ -476,6 +591,7 @@ export const translations: Record<Language, any> = {
       concept: "Концепция",
       suites: "Люксы",
       amenities: "Удобства",
+      gateway: "Въезд",
       reserve: "Забронировать"
     },
     hero: {
@@ -516,8 +632,8 @@ export const translations: Record<Language, any> = {
         },
         {
           title: "Лаундж Паддок",
-          desc: "Расположен на 1 этаже. Эксклюзивный социальный центр, где можно насладиться отборными напитками и закусками.",
-          detail: "Расположенный на первом этаже (1F), Паддок является социальной душой Glass Room.\n\nАтмосфера:\nТемная, угрюмая и интимная.\n\nЕда и Напитки:\nГости могут бесплатно насладиться отборными редкими сортами виски, коньяка и авторским кофе.",
+          desc: "Расположен на 1 этаже. Эксклюзивный социальный центр, предлагающий напитки и профессиональное обслуживание автомобилей.",
+          detail: "Расположенный на первом этаже (1F), Паддок является социальной душой Glass Room.\n\nАтмосфера:\nТемная, угрюмая и интимная.\n\nСервисный Отсек:\nПока вы отдыхаете, наши сертифицированные специалисты выполняют необходимое обслуживание и детейлинг вашего автомобиля.\n\nЕда и Напитки:\nГости могут бесплатно насладиться отборными редкими сортами виски, коньяка и авторским кофе.",
           price: "Доступ Включен"
         },
         {
@@ -527,6 +643,26 @@ export const translations: Record<Language, any> = {
           price: "Доступ Включен"
         }
       ]
+    },
+    gateway: {
+      title: "Сервис Gateway",
+      subtitle: "Комплексное решение для путешественников из Японии и России",
+      desc: "Studio 675 берет на себя оформление документов для временного ввоза (T.I.D) и обязательное страхование.",
+      list: [
+        "Таможенное оформление",
+        "Обязательное корейское страхование",
+        "Аренда Hi-Pass и карт",
+        "Встреча в порту Пусана"
+      ],
+      formTitle: "Запрос на услуги въезда",
+      fields: {
+        name: "ФИО (как в загранпаспорте)",
+        email: "Электронная почта",
+        vehicle: "Тип автомобиля",
+        plate: "Номер автомобиля",
+        date: "Дата прибытия"
+      },
+      button: "ПОЛУЧИТЬ РАСЧЕТ"
     },
     reservation: {
       step1: "Шаг 01",
@@ -541,9 +677,11 @@ export const translations: Record<Language, any> = {
       step2: "Шаг 02",
       dateDetails: "Дата и Детали",
       back: "Назад",
-      checkin: "Время Заезда",
-      guests: "Кол-во Гостей",
+      checkin: "Время заезда",
+      customCheckin: "Нужно изменить время заезда? Свяжитесь с консьержем",
+      guests: "Кол-во гостей",
       maxGuests: "Макс 3 гостя",
+      includeGateway: "Включить услугу временного ввоза (Gateway)",
       continue: "К Оплате",
       step3: "Шаг 03",
       secure: "Оформить Бронь",
