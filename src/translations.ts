@@ -116,6 +116,20 @@ export const translations: Record<Language, any> = {
       return: "Return to Home",
       orPlatform: "Or Book via Platform",
       airbnb: "Book on Airbnb"
+    },
+    curated: {
+      title: "Curated Lifestyle",
+      subtitle: "Beyond the Glass",
+      lumiere: {
+        title: "Lumiere Pro",
+        desc: "Premium Vehicle Care & Protection",
+        linkText: "Visit Lumiere"
+      },
+      velocity: {
+        title: "Velocity X",
+        desc: "High-Performance Digital Running",
+        linkText: "Visit Velocity"
+      }
     }
   },
   ko: {
@@ -233,6 +247,20 @@ export const translations: Record<Language, any> = {
       return: "홈으로 돌아가기",
       orPlatform: "또는 플랫폼으로 예약",
       airbnb: "에어비앤비로 예약하기"
+    },
+    curated: {
+      title: "큐레이티드 라이프스타일",
+      subtitle: "유리벽 너머의 경험",
+      lumiere: {
+        title: "Lumiere Pro",
+        desc: "프리미엄 차량 관리 및 보호 필름 시공",
+        linkText: "Lumiere 방문하기"
+      },
+      velocity: {
+        title: "Velocity X",
+        desc: "하이퍼포먼스 디지털 러닝 플랫폼",
+        linkText: "Velocity 방문하기"
+      }
     }
   },
   ja: {
@@ -350,6 +378,20 @@ export const translations: Record<Language, any> = {
       return: "ホームに戻る",
       orPlatform: "またはプラットフォームで予約",
       airbnb: "Airbnbで予約する"
+    },
+    curated: {
+      title: "Curated Lifestyle",
+      subtitle: "Beyond the Glass",
+      lumiere: {
+        title: "Lumiere Pro",
+        desc: "Premium Vehicle Care & Protection",
+        linkText: "Visit Lumiere"
+      },
+      velocity: {
+        title: "Velocity X",
+        desc: "High-Performance Digital Running",
+        linkText: "Visit Velocity"
+      }
     }
   },
   zh: {
@@ -467,6 +509,20 @@ export const translations: Record<Language, any> = {
       return: "返回首页",
       orPlatform: "或通过平台预订",
       airbnb: "在 Airbnb 上预订"
+    },
+    curated: {
+      title: "Curated Lifestyle",
+      subtitle: "Beyond the Glass",
+      lumiere: {
+        title: "Lumiere Pro",
+        desc: "Premium Vehicle Care & Protection",
+        linkText: "Visit Lumiere"
+      },
+      velocity: {
+        title: "Velocity X",
+        desc: "High-Performance Digital Running",
+        linkText: "Visit Velocity"
+      }
     }
   },
   es: {
@@ -584,6 +640,20 @@ export const translations: Record<Language, any> = {
       return: "Volver al Inicio",
       orPlatform: "O reservar vía plataforma",
       airbnb: "Reservar en Airbnb"
+    },
+    curated: {
+      title: "Curated Lifestyle",
+      subtitle: "Beyond the Glass",
+      lumiere: {
+        title: "Lumiere Pro",
+        desc: "Premium Vehicle Care & Protection",
+        linkText: "Visit Lumiere"
+      },
+      velocity: {
+        title: "Velocity X",
+        desc: "High-Performance Digital Running",
+        linkText: "Visit Velocity"
+      }
     }
   },
   ru: {
@@ -701,6 +771,20 @@ export const translations: Record<Language, any> = {
       return: "На Главную",
       orPlatform: "Или через платформу",
       airbnb: "Забронировать на Airbnb"
+    },
+    curated: {
+      title: "Curated Lifestyle",
+      subtitle: "Beyond the Glass",
+      lumiere: {
+        title: "Lumiere Pro",
+        desc: "Premium Vehicle Care & Protection",
+        linkText: "Visit Lumiere"
+      },
+      velocity: {
+        title: "Velocity X",
+        desc: "High-Performance Digital Running",
+        linkText: "Visit Velocity"
+      }
     }
   }
 };

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { X, Shield, Sparkles, UserCheck, Wifi, CheckCircle2, Info } from 'lucide-react';
+import { X, Shield, Sparkles, UserCheck, Wifi, CheckCircle2, Info, ChevronRight, Wind } from 'lucide-react';
 import { Language } from '../types';
 import { translations } from '../translations';
 
@@ -112,6 +112,58 @@ const AmenitiesModal: React.FC<AmenitiesModalProps> = ({ isOpen, onClose, onRese
                 <button onClick={onReserve} className="text-luxury-gold hover:text-white border-b border-luxury-gold hover:border-white transition-colors pb-1 uppercase tracking-widest text-xs">
                   Experience the Service
                 </button>
+              </div>
+
+              {/* Curated Lifestyle Section */}
+              <div className="mt-16 border-t border-white/5 pt-12 text-center md:text-left">
+                <div className="mb-10 text-center">
+                  <h4 className="text-luxury-gold text-xs font-bold tracking-[0.3em] uppercase mb-2">{t.curated.subtitle}</h4>
+                  <h2 className="text-3xl font-serif text-white">{t.curated.title}</h2>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {/* Lumiere Pro Link */}
+                  <a
+                    href="https://lumiere-pro.pages.dev/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group relative overflow-hidden rounded-xl border border-white/10 bg-gradient-to-br from-white/5 to-black hover:border-luxury-gold/30 transition-all duration-500"
+                  >
+                    <div className="absolute inset-0 bg-luxury-gold/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                    <div className="p-8 relative z-10 flex flex-col h-full text-left">
+                      <div className="flex justify-between items-start mb-4">
+                        <Shield className="w-8 h-8 text-slate-300 group-hover:text-luxury-gold transition-colors" />
+                        <span className="text-[10px] uppercase tracking-widest text-slate-500 border border-white/10 px-2 py-1 rounded">Partner</span>
+                      </div>
+                      <h3 className="text-xl font-serif text-white mb-2">{t.curated.lumiere.title}</h3>
+                      <p className="text-slate-400 text-sm mb-6 flex-1">{t.curated.lumiere.desc}</p>
+                      <div className="flex items-center gap-2 text-xs uppercase tracking-widest text-luxury-gold">
+                        {t.curated.lumiere.linkText} <ChevronRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
+                      </div>
+                    </div>
+                  </a>
+
+                  {/* Velocity X Link */}
+                  <a
+                    href="https://velocity-x.pages.dev/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group relative overflow-hidden rounded-xl border border-white/10 bg-gradient-to-br from-white/5 to-black hover:border-luxury-gold/30 transition-all duration-500"
+                  >
+                    <div className="absolute inset-0 bg-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                    <div className="p-8 relative z-10 flex flex-col h-full text-left">
+                      <div className="flex justify-between items-start mb-4">
+                        <Wind className="w-8 h-8 text-slate-300 group-hover:text-blue-400 transition-colors" />
+                        <span className="text-[10px] uppercase tracking-widest text-slate-500 border border-white/10 px-2 py-1 rounded">Partner</span>
+                      </div>
+                      <h3 className="text-xl font-serif text-white mb-2">{t.curated.velocity.title}</h3>
+                      <p className="text-slate-400 text-sm mb-6 flex-1">{t.curated.velocity.desc}</p>
+                      <div className="flex items-center gap-2 text-xs uppercase tracking-widest text-blue-400">
+                        {t.curated.velocity.linkText} <ChevronRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
+                      </div>
+                    </div>
+                  </a>
+                </div>
               </div>
             </div>
           ) : (

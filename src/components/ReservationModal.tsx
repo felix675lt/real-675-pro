@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { loadPaymentWidget, PaymentWidgetInstance } from '@tosspayments/payment-widget-sdk';
 import { X, Calendar, Clock, CreditCard, CheckCircle, ChevronRight, ChevronLeft, Moon, Sun, Users, Lock, Truck, MessageSquare } from 'lucide-react';
 import { Language } from '../types';
 import { translations } from '../translations';
@@ -8,12 +9,13 @@ interface ReservationModalProps {
   onClose: () => void;
   language: Language;
   onContactConcierge: () => void;
+  initialStep?: Step;
 }
 
 type Step = 'type' | 'date' | 'payment' | 'confirmed';
 type StayType = 'overnight' | 'dayuse';
 
-const ReservationModal: React.FC<ReservationModalProps> = ({ isOpen, onClose, language, onContactConcierge }) => {
+const ReservationModal: React.FC<ReservationModalProps> = ({ isOpen, onClose, language, onContactConcierge, initialStep = 'type' }) => {
   const [visible, setVisible] = useState(false);
   const [step, setStep] = useState<Step>('type');
   const [stayType, setStayType] = useState<StayType>('overnight');
@@ -25,6 +27,14 @@ const ReservationModal: React.FC<ReservationModalProps> = ({ isOpen, onClose, la
   const [includeGateway, setIncludeGateway] = useState(false);
   const [gatewayInfo, setGatewayInfo] = useState({ vehicle: '', plate: '' });
 
+  // Toss Payments Widget State (Moved to top level)
+  const [paymentWidget, setPaymentWidget] = useState<PaymentWidgetInstance | null>(null);
+  const paymentWidgetRef = useRef<HTMLDivElement>(null);
+  const paymentMethodsWidgetRef = useRef<ReturnType<PaymentWidgetInstance['renderPaymentMethods']> | null>(null);
+  const clientKey = "test_gck_docs_Ovk5rk1EwkEbP0W43n07xlzm"; // Official Test Client Key for Payment Widget
+  // Use a stable customer key or ensure it doesn't change on re-renders unless intended
+  const [customerKey] = useState("customer_key_" + new Date().getTime());
+
   const t = translations[language].reservation;
   const gt = translations[language].gateway;
 
@@ -32,7 +42,7 @@ const ReservationModal: React.FC<ReservationModalProps> = ({ isOpen, onClose, la
     if (isOpen) {
       setTimeout(() => setVisible(true), 10);
       document.body.style.overflow = 'hidden';
-      setStep('type');
+      setStep(initialStep);
       setIsProcessing(false);
       setIncludeGateway(false);
       setGatewayInfo({ vehicle: '', plate: '' });
@@ -46,6 +56,49 @@ const ReservationModal: React.FC<ReservationModalProps> = ({ isOpen, onClose, la
     }
     return () => { document.body.style.overflow = 'unset'; };
   }, [isOpen]);
+
+  // Toss Payments Widget Initialization Effect
+  useEffect(() => {
+    if (step === 'payment') {
+      (async () => {
+        try {
+          const paymentWidget = await loadPaymentWidget(clientKey, customerKey);
+
+          // @ts-ignore
+          const paymentMethodsWidget = paymentWidget.renderPaymentMethods(
+            "#payment-widget",
+            { value: stayType === 'overnight' ? 1200 : 450 },
+            { variantKey: "DEFAULT" }
+          );
+
+          // @ts-ignore
+          paymentWidget.renderAgreement(
+            '#agreement',
+            { variantKey: 'AGREEMENT' }
+          );
+
+          setPaymentWidget(paymentWidget);
+          paymentMethodsWidgetRef.current = paymentMethodsWidget;
+        } catch (e) {
+          console.error("Error loading payment widget:", e);
+        }
+      })();
+    }
+  }, [step, clientKey, customerKey, stayType]);
+
+  // Toss Payments Amount Update Effect
+  useEffect(() => {
+    const paymentMethodsWidget = paymentMethodsWidgetRef.current;
+
+    if (paymentMethodsWidget == null) {
+      return;
+    }
+
+    // @ts-ignore
+    paymentMethodsWidget.updateAmount(
+      stayType === 'overnight' ? 1200 : 450
+    );
+  }, [stayType]);
 
   if (!isOpen) return null;
 
@@ -89,15 +142,6 @@ const ReservationModal: React.FC<ReservationModalProps> = ({ isOpen, onClose, la
   const isPrevMonthDisabled = () => {
     const today = new Date();
     return viewDate.getMonth() === today.getMonth() && viewDate.getFullYear() === today.getFullYear();
-  };
-
-  const handlePayment = (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsProcessing(true);
-    setTimeout(() => {
-      setIsProcessing(false);
-      setStep('confirmed');
-    }, 2000);
   };
 
   const renderTypeSelection = () => (
@@ -259,6 +303,28 @@ const ReservationModal: React.FC<ReservationModalProps> = ({ isOpen, onClose, la
     </div>
   );
 
+  const handlePayment = async () => {
+    if (!paymentWidget) return;
+
+    setIsProcessing(true);
+
+    try {
+      // @ts-ignore
+      await paymentWidget.requestPayment({
+        orderId: "order_id_" + new Date().getTime(),
+        orderName: stayType === 'overnight' ? t.overnight : t.dayuse,
+        customerName: "Anonymous Customer",
+        customerEmail: "customer@example.com",
+        customerMobilePhone: "01012345678",
+        successUrl: window.location.href,
+        failUrl: window.location.href,
+      });
+    } catch (error) {
+      console.error(error);
+      setIsProcessing(false);
+    }
+  };
+
   const renderPayment = () => (
     <div className="max-w-4xl mx-auto animate-fade-in-up">
       <div className="text-center mb-8">
@@ -295,20 +361,13 @@ const ReservationModal: React.FC<ReservationModalProps> = ({ isOpen, onClose, la
         </div>
 
         <div>
-          <form onSubmit={handlePayment} className="space-y-6">
-            <input type="text" required placeholder={t.cardName} className="w-full bg-black/30 border border-white/10 rounded-lg px-4 py-3 text-white focus:border-luxury-gold focus:outline-none" />
-            <div className="relative">
-              <CreditCard className="absolute left-4 top-3.5 w-5 h-5 text-slate-500" />
-              <input type="text" required placeholder={t.cardNumber} className="w-full bg-black/30 border border-white/10 rounded-lg pl-12 pr-4 py-3 text-white focus:border-luxury-gold focus:outline-none font-mono" />
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              <input type="text" required placeholder={t.expiry} className="w-full bg-black/30 border border-white/10 rounded-lg px-4 py-3 text-white focus:border-luxury-gold focus:outline-none text-center" />
-              <input type="text" required placeholder={t.cvc} className="w-full bg-black/30 border border-white/10 rounded-lg px-4 py-3 text-white focus:border-luxury-gold focus:outline-none text-center" />
-            </div>
-            <button type="submit" disabled={isProcessing} className="w-full bg-luxury-gold text-black py-4 uppercase tracking-widest font-semibold hover:bg-white transition-all disabled:opacity-50">
-              {isProcessing ? t.processing : t.pay}
-            </button>
-          </form>
+          {/* Payment Widget Render Area */}
+          <div id="payment-widget" className="w-full" />
+          <div id="agreement" className="w-full" />
+
+          <button onClick={handlePayment} disabled={isProcessing} className="w-full bg-luxury-gold text-black py-4 uppercase tracking-widest font-semibold hover:bg-white transition-all disabled:opacity-50 mt-6">
+            {isProcessing ? t.processing : t.pay}
+          </button>
         </div>
       </div>
     </div>

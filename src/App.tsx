@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import Features from './components/Features';
@@ -17,6 +17,7 @@ const App: React.FC = () => {
   const [isAmenitiesOpen, setIsAmenitiesOpen] = useState(false);
   const [amenitiesInitialTab, setAmenitiesInitialTab] = useState<'amenities' | 'gateway'>('amenities');
   const [isReservationOpen, setIsReservationOpen] = useState(false);
+  const [reservationInitialStep, setReservationInitialStep] = useState<'type' | 'date' | 'payment' | 'confirmed'>('type');
   const [language, setLanguage] = useState<Language>('en');
 
   const openChat = () => setIsChatOpen(true);
@@ -24,7 +25,25 @@ const App: React.FC = () => {
     setAmenitiesInitialTab(tab);
     setIsAmenitiesOpen(true);
   };
-  const openReservation = () => setIsReservationOpen(true);
+  const openReservation = () => {
+    setReservationInitialStep('type');
+    setIsReservationOpen(true);
+  };
+
+  // Check for Payment Success Redirect
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const paymentKey = urlParams.get("paymentKey");
+    const orderId = urlParams.get("orderId");
+    const amount = urlParams.get("amount");
+
+    if (paymentKey && orderId && amount) {
+      setReservationInitialStep('confirmed');
+      setIsReservationOpen(true);
+      // Clean up URL parameters
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
+  }, []);
 
   const scrollToSection = (id: string) => {
     const el = document.getElementById(id);
@@ -80,6 +99,7 @@ const App: React.FC = () => {
         onClose={() => setIsReservationOpen(false)}
         language={language}
         onContactConcierge={openChat}
+        initialStep={reservationInitialStep}
       />
 
       <Concierge isOpen={isChatOpen} setIsOpen={setIsChatOpen} />
