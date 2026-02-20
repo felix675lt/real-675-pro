@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { loadPaymentWidget, PaymentWidgetInstance } from '@tosspayments/payment-widget-sdk';
-import { X, Calendar, Clock, CreditCard, CheckCircle, ChevronRight, ChevronLeft, Moon, Sun, Users, Lock, Truck, MessageSquare } from 'lucide-react';
+import { X, Calendar, Clock, CreditCard, CheckCircle, ChevronRight, ChevronLeft, Moon, Sun, Users, Lock, Truck, MessageSquare, Copy, Check } from 'lucide-react';
 import { PayPalScriptProvider, PayPalButtons } from '@paypal/react-paypal-js';
+import { QRCodeSVG } from 'qrcode.react';
 import { Language } from '../types';
 import { translations } from '../translations';
 
@@ -29,6 +30,10 @@ const ReservationModal: React.FC<ReservationModalProps> = ({ isOpen, onClose, la
   const [isProcessing, setIsProcessing] = useState(false);
   const [includeGateway, setIncludeGateway] = useState(false);
   const [gatewayInfo, setGatewayInfo] = useState({ vehicle: '', plate: '' });
+  const [globalMethod, setGlobalMethod] = useState<'paypal' | 'usdt'>('paypal');
+  const [isCopied, setIsCopied] = useState(false);
+
+  const USDT_ADDRESS = "0x5c9856c32eaff6659aae211d816b45a8b50de756";
 
   // Toss Payments Widget State (Moved to top level)
   const [paymentWidget, setPaymentWidget] = useState<PaymentWidgetInstance | null>(null);
@@ -364,49 +369,108 @@ const ReservationModal: React.FC<ReservationModalProps> = ({ isOpen, onClose, la
         </div>
 
         <div className="flex flex-col gap-6">
-          {/* Global Payment Options (PayPal) */}
+          {/* Global Payment Options (PayPal & USDT) */}
           <div className="bg-white/5 p-6 rounded-xl border border-white/10 relative overflow-hidden">
             <div className="absolute top-0 right-0 w-32 h-32 bg-luxury-gold/5 rounded-full blur-3xl -mr-16 -mt-16"></div>
-            <h4 className="text-xs uppercase tracking-widest text-luxury-gold mb-6 flex items-center gap-2">
-              <CreditCard className="w-4 h-4" /> Global Payment
-            </h4>
-            <PayPalScriptProvider options={{ clientId: PAYPAL_CLIENT_ID, currency: "USD", intent: "capture", components: "buttons" }}>
-              <PayPalButtons
-                style={{ layout: "vertical", color: "gold", shape: "rect", label: "paypal", height: 48 }}
-                createOrder={(data, actions) => {
-                  return actions.order.create({
-                    intent: "CAPTURE",
-                    purchase_units: [
-                      {
-                        description: `Reservation - ${stayType === 'overnight' ? t.overnight : t.dayuse}`,
-                        amount: {
-                          currency_code: "USD",
-                          value: (stayType === 'overnight' ? 1200 : 450).toString(),
+
+            <div className="flex items-center justify-between mb-6">
+              <h4 className="text-xs uppercase tracking-widest text-luxury-gold flex items-center gap-2">
+                <CreditCard className="w-4 h-4" /> Global Payment
+              </h4>
+              <div className="flex gap-2">
+                <button
+                  onClick={() => setGlobalMethod('paypal')}
+                  className={`text-[10px] uppercase tracking-widest px-3 py-1 rounded-full border transition-all ${globalMethod === 'paypal' ? 'border-luxury-gold text-luxury-gold bg-luxury-gold/10' : 'border-white/10 text-slate-500 hover:text-white'}`}
+                >
+                  PayPal
+                </button>
+                <button
+                  onClick={() => setGlobalMethod('usdt')}
+                  className={`text-[10px] uppercase tracking-widest px-3 py-1 rounded-full border transition-all ${globalMethod === 'usdt' ? 'border-luxury-gold text-luxury-gold bg-luxury-gold/10' : 'border-white/10 text-slate-500 hover:text-white'}`}
+                >
+                  USDT
+                </button>
+              </div>
+            </div>
+
+            {globalMethod === 'paypal' ? (
+              <PayPalScriptProvider options={{ clientId: PAYPAL_CLIENT_ID, currency: "USD", intent: "capture", components: "buttons" }}>
+                <PayPalButtons
+                  style={{ layout: "vertical", color: "gold", shape: "rect", label: "paypal", height: 48 }}
+                  createOrder={(data, actions) => {
+                    return actions.order.create({
+                      intent: "CAPTURE",
+                      purchase_units: [
+                        {
+                          description: `Reservation - ${stayType === 'overnight' ? t.overnight : t.dayuse}`,
+                          amount: {
+                            currency_code: "USD",
+                            value: (stayType === 'overnight' ? 1200 : 450).toString(),
+                          },
                         },
-                      },
-                    ],
-                  });
-                }}
-                onApprove={async (data, actions) => {
-                  setIsProcessing(true);
-                  if (actions.order) {
-                    try {
-                      const details = await actions.order.capture();
-                      console.log("PayPal Transaction completed by " + details?.payer?.name?.given_name);
-                      setStep('confirmed');
-                    } catch (error) {
-                      console.error("PayPal Capture Error", error);
-                    } finally {
-                      setIsProcessing(false);
+                      ],
+                    });
+                  }}
+                  onApprove={async (data, actions) => {
+                    setIsProcessing(true);
+                    if (actions.order) {
+                      try {
+                        const details = await actions.order.capture();
+                        console.log("PayPal Transaction completed by " + details?.payer?.name?.given_name);
+                        setStep('confirmed');
+                      } catch (error) {
+                        console.error("PayPal Capture Error", error);
+                      } finally {
+                        setIsProcessing(false);
+                      }
                     }
-                  }
-                }}
-                onError={(err) => {
-                  console.error("PayPal Error:", err);
-                  setIsProcessing(false);
-                }}
-              />
-            </PayPalScriptProvider>
+                  }}
+                  onError={(err) => {
+                    console.error("PayPal Error:", err);
+                    setIsProcessing(false);
+                  }}
+                />
+              </PayPalScriptProvider>
+            ) : (
+              <div className="flex flex-col items-center justify-center p-6 bg-black/40 rounded-lg border border-white/5 animate-fade-in text-center relative z-10">
+                <div className="bg-white p-3 rounded-lg mb-4">
+                  <QRCodeSVG value={USDT_ADDRESS} size={140} level="H" includeMargin={false} />
+                </div>
+                <h5 className="text-white text-sm font-medium mb-1 tracking-wide">Tether (USDT)</h5>
+                <p className="text-slate-400 text-xs mb-5 font-medium px-3 py-1 bg-white/5 rounded-full border border-white/10 inline-block">Arbitrum Network</p>
+
+                <div className="flex items-center gap-2 w-full max-w-xs mb-2 relative">
+                  <code className="flex-1 bg-white/10 px-3 py-2.5 rounded text-[10px] text-slate-300 truncate focus:outline-none select-all text-left border border-white/10">
+                    {USDT_ADDRESS}
+                  </code>
+                  <button
+                    onClick={() => {
+                      navigator.clipboard.writeText(USDT_ADDRESS);
+                      setIsCopied(true);
+                      setTimeout(() => setIsCopied(false), 2000);
+                    }}
+                    className={`p-2.5 rounded transition-all border ${isCopied ? 'bg-green-500/20 text-green-400 border-green-500/30' : 'bg-white/10 hover:bg-white/20 text-white border-white/10'}`}
+                    title="Copy Address"
+                  >
+                    {isCopied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+                  </button>
+                </div>
+
+                <button
+                  onClick={() => {
+                    setIsProcessing(true);
+                    setTimeout(() => {
+                      setIsProcessing(false);
+                      setStep('confirmed');
+                    }, 1500);
+                  }}
+                  disabled={isProcessing}
+                  className="w-full mt-6 py-3.5 bg-luxury-gold/10 hover:bg-luxury-gold/20 text-luxury-gold border border-luxury-gold/30 hover:border-luxury-gold/60 rounded text-xs uppercase tracking-widest transition-all font-semibold flex items-center justify-center gap-2"
+                >
+                  {isProcessing ? 'Verifying...' : 'I have sent the payment'}
+                </button>
+              </div>
+            )}
           </div>
 
           <div className="relative flex items-center py-2">
