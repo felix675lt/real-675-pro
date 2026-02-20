@@ -1,7 +1,7 @@
 import { GoogleGenerativeAI, ChatSession } from "@google/generative-ai";
 
 const SYSTEM_INSTRUCTION = `
-You are "Jarvis", the AI Concierge for "The Glass Room", an ultra-luxury garage-style hotel.
+You are "Jarvis", the AI Concierge for "The The Sanctum", an ultra-luxury garage-style hotel.
 The concept is "Drive-in, Zone-out".
 
 FACILITY LAYOUT & DETAILS:
@@ -36,16 +36,16 @@ let genAI: GoogleGenerativeAI | null = null;
 export const initChat = () => {
   // 웹 환경(Vite)에 맞는 API 키 가져오기
   const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
-  
+
   if (!apiKey) {
     console.warn("Gemini API Key is missing. AI features will be disabled.");
     return;
   }
 
   genAI = new GoogleGenerativeAI(apiKey);
-  const model = genAI.getGenerativeModel({ 
-    model: "gemini-1.5-flash", 
-    systemInstruction: SYSTEM_INSTRUCTION 
+  const model = genAI.getGenerativeModel({
+    model: "gemini-1.5-flash",
+    systemInstruction: SYSTEM_INSTRUCTION
   });
 
   chatSession = model.startChat({
@@ -60,15 +60,17 @@ export const sendMessageToGemini = async (message: string): Promise<string> => {
   if (!chatSession) {
     initChat();
   }
-  
+
   try {
-    if (!chatSession) throw new Error("Chat session not initialized");
-    
+    if (!chatSession) {
+      return "I am currently undergoing scheduled maintenance. Please click the 'Human' button above to connect directly with our Live Support staff for immediate assistance.";
+    }
+
     const result = await chatSession.sendMessage(message);
     const response = await result.response;
     return response.text();
   } catch (error) {
     console.error("Gemini Error:", error);
-    return "I apologize, I am momentarily disconnected from the main server. Please check your API Key configuration.";
+    return "I am experiencing temporary connection issues. Please use the 'Human' button to reach our Live Support team.";
   }
 };

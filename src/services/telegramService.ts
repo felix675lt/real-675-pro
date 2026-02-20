@@ -3,6 +3,7 @@ export interface TelegramUpdate {
     message?: {
         message_id: number;
         text: string;
+        date: number;
         reply_to_message?: {
             message_id: number;
         };

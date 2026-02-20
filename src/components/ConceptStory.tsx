@@ -72,7 +72,7 @@ const ConceptStory: React.FC<ConceptStoryProps> = ({ isOpen, onClose }) => {
             </div>
 
             <p>
-              That night, the concept of <span className="text-white font-medium">The Glass Room</span> was born.
+              That night, the concept of <span className="text-white font-medium">The The Sanctum</span> was born.
             </p>
 
             <p>

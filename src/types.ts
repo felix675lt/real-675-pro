@@ -9,3 +9,14 @@ export interface Room {
   price: string;
   features: string[];
 }
+
+export interface Amenity {
+  icon: JSX.Element;
+  title: string;
+  description: string;
+}
+
+export interface ChatMessage {
+  role: 'user' | 'model' | 'agent' | 'system';
+  text: string;
+}

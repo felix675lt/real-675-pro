@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X, Key, Globe, ChevronDown } from 'lucide-react';
+import { Menu, X, Hexagon, Globe, ChevronDown } from 'lucide-react';
 import { Language } from '../types';
 import { translations } from '../translations';
 
@@ -51,9 +51,10 @@ const Navbar: React.FC<NavbarProps> = ({
         }`}
     >
       <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
-        <div className="flex items-center gap-2">
-          <Key className="w-6 h-6 text-luxury-gold" />
-          <span className="font-serif text-2xl font-bold tracking-widest text-white">GLASS ROOM</span>
+        {/* Logo Section */}
+        <div className="flex items-center gap-3">
+          <Hexagon className="w-6 h-6 text-luxury-gold" strokeWidth={1.5} />
+          <span className="font-serif text-2xl font-bold tracking-widest text-white">THE SANCTUM</span>
         </div>
 
         {/* Desktop Menu */}

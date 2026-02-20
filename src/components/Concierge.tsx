@@ -16,6 +16,8 @@ const Concierge: React.FC<ConciergeProps> = ({ isOpen, setIsOpen }) => {
   const [isLiveMode, setIsLiveMode] = useState(false);
   const [isAdminView, setIsAdminView] = useState(false); // Simulates the staff view
   const [myMessageIds, setMyMessageIds] = useState<number[]>([]); // Track IDs of messages I sent
+  const [liveStartTime, setLiveStartTime] = useState<number | null>(null); // Track when live chat started
+  const [guestId] = useState(() => Math.floor(1000 + Math.random() * 9000).toString()); // Random 4-digit ID
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
 
@@ -48,7 +50,7 @@ const Concierge: React.FC<ConciergeProps> = ({ isOpen, setIsOpen }) => {
       const updates = await checkNewMessages();
 
       updates.forEach(update => {
-        // Filter: Only show messages that are Replies to MY messages
+        // Filter: Only show messages that are Replies to MY messages (Strict 1:1 Mapping)
         if (update.message?.reply_to_message && myMessageIds.includes(update.message.reply_to_message.message_id)) {
           // Check if we already have this message (by content, simple check)
           setMessages(prev => {
@@ -61,14 +63,14 @@ const Concierge: React.FC<ConciergeProps> = ({ isOpen, setIsOpen }) => {
           });
         }
       });
-    }, 3000); // Poll every 3 seconds
+    }, 5000); // Poll every 5 seconds
 
     return () => clearInterval(interval);
   }, [isLiveMode, myMessageIds]);
 
   const triggerNotification = () => {
     if ("Notification" in window && Notification.permission === "granted") {
-      new Notification("GLASS ROOM CONCIERGE", {
+      new Notification("THE SANCTUM CONCIERGE", {
         body: "New message from Front Desk",
         icon: "/favicon.ico" // assuming favicon exists, otherwise browser default
       });
@@ -81,10 +83,12 @@ const Concierge: React.FC<ConciergeProps> = ({ isOpen, setIsOpen }) => {
 
   const requestLiveAgent = async () => {
     setIsLiveMode(true);
+    // Record current time in Unix timestamp (seconds)
+    setLiveStartTime(Math.floor(Date.now() / 1000));
     setMessages(prev => [...prev, { role: 'system', text: "Connecting you to a live specialist... (Please wait for reply)" }]);
 
-    // Notify Admin via Telegram
-    const msgId = await sendTelegramNotification("🔔 GUEST REQUEST: Client is requesting a live agent connection.");
+    // Notify Admin via Telegram with Swipe Tip
+    const msgId = await sendTelegramNotification(`🔔 GUEST REQUEST: Guest-${guestId} is requesting a live agent connection. (Tip: Swipe Left to Reply directly to this client)`);
     if (msgId) setMyMessageIds(prev => [...prev, msgId]);
 
     // Simulate notifying the admin
@@ -108,8 +112,10 @@ const Concierge: React.FC<ConciergeProps> = ({ isOpen, setIsOpen }) => {
 
     // If Live Mode is active, we don't call AI. We wait for Admin to reply (simulated via AdminView or just waiting)
     if (isLiveMode) {
-      const msgId = await sendTelegramNotification(`👤 Guest: ${userMsg}`);
+      setIsLoading(true);
+      const msgId = await sendTelegramNotification(`👤 Guest-${guestId}: ${userMsg} (Tip: Swipe Left to Reply 💬)`);
       if (msgId) setMyMessageIds(prev => [...prev, msgId]);
+      setIsLoading(false);
       return;
     }
 

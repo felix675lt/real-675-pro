@@ -11,7 +11,7 @@ export const translations: Record<Language, any> = {
     },
     hero: {
       subtitle: "Private Garage Suites",
-      title: "THE GLASS ROOM",
+      title: "THE SANCTUM",
       slogan: "Drive In. Zone Out.",
       desc: "Experience the transparency of luxury.\nYour vehicle, showcased in your private sanctuary.",
       enter: "ENTER SANCTUARY",
@@ -20,7 +20,7 @@ export const translations: Record<Language, any> = {
     features: {
       concept: "The Concept",
       title: "Designed for the Driven Individual.",
-      desc: "Glass Room reinvents the luxury stay. We understand that your vehicle is an extension of yourself. Our \"Garage Suites\" feature glass-walled viewing areas connecting your private garage to your living space, so your pride and joy is always the centerpiece.",
+      desc: "The Sanctum reinvents the luxury stay. We understand that your vehicle is an extension of yourself. Our \"Garage Suites\" feature glass-walled viewing areas connecting your private garage to your living space, so your pride and joy is always the centerpiece.",
       items: [
         { title: "Absolute Privacy", desc: "Check-in via app. Drive directly into your suite's garage. No front desk, no cameras, no eyes." },
         { title: "Acoustic Perfection", desc: "Sound-dampened walls and high-fidelity Bang & Olufsen audio systems in every room." },
@@ -48,7 +48,7 @@ export const translations: Record<Language, any> = {
         {
           title: "The Paddock Lounge",
           desc: "Located on the 1st floor. An exclusive social hub offering curated drinks and professional vehicle maintenance.",
-          detail: "Located on the ground floor (1F), The Paddock is the communal soul of the Glass Room.\n\nAtmosphere:\nDark, moody, and intimate.\n\nService Bay:\nWhile you relax with a rare scotch, our certified technicians perform essential maintenance, tire pressure optimization, and detailing on your vehicle.\n\nFood & Beverage:\nGuests enjoy complimentary access to a curated selection of spirits and artisanal coffee.",
+          detail: "Located on the ground floor (1F), The Paddock is the communal soul of the The Sanctum.\n\nAtmosphere:\nDark, moody, and intimate.\n\nService Bay:\nWhile you relax with a rare scotch, our certified technicians perform essential maintenance, tire pressure optimization, and detailing on your vehicle.\n\nFood & Beverage:\nGuests enjoy complimentary access to a curated selection of spirits and artisanal coffee.",
           price: "Access Included"
         },
         {
@@ -62,7 +62,7 @@ export const translations: Record<Language, any> = {
     gateway: {
       title: "Gateway Service",
       subtitle: "One-stop solution for Japan/Russia overlanders",
-      desc: "Studio 675 handles complex temporary import documents (T.I.D), customs deposits, and mandatory insurance.",
+      desc: "The Sanctum handles complex temporary import documents (T.I.D), customs deposits, and mandatory insurance.",
       list: [
         "Customs Clearance Agency",
         "Mandatory Korean Insurance",
@@ -142,7 +142,7 @@ export const translations: Record<Language, any> = {
     },
     hero: {
       subtitle: "프라이빗 개러지 스위트",
-      title: "THE GLASS ROOM",
+      title: "THE SANCTUM",
       slogan: "Drive In. Zone Out.",
       desc: "투명한 럭셔리를 경험하세요.\n당신의 차량이 전시되는 프라이빗한 성역.",
       enter: "입장하기",
@@ -151,7 +151,7 @@ export const translations: Record<Language, any> = {
     features: {
       concept: "컨셉",
       title: "드라이버를 위한 설계.",
-      desc: "Glass Room은 럭셔리 스테이를 재정의합니다. 자동차는 당신의 확장입니다. 우리의 \"개러지 스위트\"는 유리 벽을 통해 거실과 개인 차고를 연결하여, 당신의 애마가 항상 중심에 있도록 설계되었습니다.",
+      desc: "The Sanctum은 럭셔리 스테이를 재정의합니다. 자동차는 당신의 확장입니다. 우리의 \"개러지 스위트\"는 유리 벽을 통해 거실과 개인 차고를 연결하여, 당신의 애마가 항상 중심에 있도록 설계되었습니다.",
       items: [
         { title: "완벽한 프라이버시", desc: "앱으로 체크인하고 차고로 직접 운전해서 들어오세요. 프론트 데스크도, 카메라도, 시선도 없습니다." },
         { title: "완벽한 방음", desc: "모든 객실에 방음 벽과 고성능 Bang & Olufsen 오디오 시스템이 설치되어 있습니다." },
@@ -193,7 +193,7 @@ export const translations: Record<Language, any> = {
     gateway: {
       title: "게이트웨이 서비스",
       subtitle: "일본/러시아 오버랜더를 위한 원스톱 솔루션",
-      desc: "복잡한 일시수입 서류(T.I.D), 세관 보증금, 의무 보험 가입을 Studio 675가 대행해 드립니다.",
+      desc: "복잡한 일시수입 서류(T.I.D), 세관 보증금, 의무 보험 가입을 The Sanctum가 대행해 드립니다.",
       list: [
         "일시 수출입 통관 대행",
         "한국 의무 보험 가입 (삼성화재)",
@@ -273,7 +273,7 @@ export const translations: Record<Language, any> = {
     },
     hero: {
       subtitle: "プライベート・ガレージ・スイート",
-      title: "THE GLASS ROOM",
+      title: "THE SANCTUM",
       slogan: "Drive In. Zone Out.",
       desc: "透明なラグジュアリーを体験してください。\nあなたの愛車が, あなただけの聖域で展示されます。",
       enter: "サンクチュアリへ",
@@ -282,7 +282,7 @@ export const translations: Record<Language, any> = {
     features: {
       concept: "コンセプト",
       title: "ドライバーのための設計",
-      desc: "Glass Room은 럭셔리 스테이를 재정의합니다. 자동차는 당신의 확장입니다. 우리의 \"개러지 스위트\"는 유리 벽을 통해 거실과 개인 차고를 연결하여, 당신의 애마가 항상 중심에 있도록 설계되었습니다.",
+      desc: "The Sanctum은 럭셔리 스테이를 재정의합니다. 자동차는 당신의 확장입니다. 우리의 \"개러지 스위트\"는 유리 벽을 통해 거실과 개인 차고를 연결하여, 당신의 애마가 항상 중심에 있도록 설계되었습니다.",
       items: [
         { title: "完全なプライバシー", desc: "앱으로 체크인하고 차고로 직접 운전해서 들어오세요. 프론트 데스크도, 카메라도, 시선도 없습니다." },
         { title: "完璧な音響", desc: "모든 객실에 방음 벽과 고성능 Bang & Olufsen 오디오 시스템이 설치되어 있습니다." },
@@ -310,7 +310,7 @@ export const translations: Record<Language, any> = {
         {
           title: "パドック・ラウンジ",
           desc: "1階に位置。厳選されたドリンクと専門的な車両メンテナンスを提供するソーシャルハブ。",
-          detail: "1階（1F）にあるパドックは, Glass Roomの社交の中心です。\n\n雰囲気:\nダークでムーディー、そして親密。\n\nサービスベイ：\nくつろいでいる間に, 認定技術者が車両の必須メンテナンスとディテーリングを行います。\n\n飲食:\n厳選されたスコッチ, コニャック, 職人技のコーヒーを無料でお楽しみいただけます。",
+          detail: "1階（1F）にあるパドックは, The Sanctumの社交の中心です。\n\n雰囲気:\nダークでムーディー、そして親密。\n\nサービスベイ：\nくつろいでいる間に, 認定技術者が車両の必須メンテナンスとディテーリングを行います。\n\n飲食:\n厳選されたスコッチ, コニャック, 職人技のコーヒーを無料でお楽しみいただけます。",
           price: "アクセス込み"
         },
         {
@@ -324,7 +324,7 @@ export const translations: Record<Language, any> = {
     gateway: {
       title: "ゲートウェイサービス",
       subtitle: "日本・ロシアのオーバーランダーのためのワンストップソリューション",
-      desc: "Studio 675が複雑な一時輸入書類(T.I.D), 税関保証金, 義務保険への加入を代行します。",
+      desc: "The Sanctumが複雑な一時輸入書類(T.I.D), 税関保証金, 義務保険への加入を代行します。",
       list: [
         "一時輸出入通関代行",
         "韓国義務保険加入代行",
@@ -404,7 +404,7 @@ export const translations: Record<Language, any> = {
     },
     hero: {
       subtitle: "私人车库套房",
-      title: "THE GLASS ROOM",
+      title: "THE SANCTUM",
       slogan: "Drive In. Zone Out.",
       desc: "体验透明的奢华。\n您的爱车将在私人圣所中展示。",
       enter: "进入圣所",
@@ -413,7 +413,7 @@ export const translations: Record<Language, any> = {
     features: {
       concept: "理念",
       title: "为驾驶者设计。",
-      desc: "Glass Room 重新定义了豪华住宿。我们理解您的车辆是您自身的延伸。我们的“车库套房”设有玻璃墙观赏区，将您的私人车库与生活空间连接起来，让您的爱车永远是焦点。",
+      desc: "The Sanctum 重新定义了豪华住宿。我们理解您的车辆是您自身的延伸。我们的“车库套房”设有玻璃墙观赏区，将您的私人车库与生活空间连接起来，让您的爱车永远是焦点。",
       items: [
         { title: "绝对隐私", desc: "通过应用程序办理入住。直接驶入套房车库。无前台，无摄像头，无视线打扰。" },
         { title: "完美声学", desc: "每个房间均配有隔音墙和高保真 Bang & Olufsen 音响系统。" },
@@ -441,7 +441,7 @@ export const translations: Record<Language, any> = {
         {
           title: "围场休息室",
           desc: "位于1楼。一个提供精选饮品和专业车辆维护的专属社交中心。",
-          detail: "位于一楼（1F）的围场是 Glass Room 的社交灵魂。\n\n氛围：\n黑暗、情绪化且亲密。\n\n服务区：\n当您休息时，我们认证的技术人员会对您的车辆进行必要的维护和美容。\n\n餐饮：\n客人可免费享用精选的稀有威士忌、干邑白兰地和手工咖啡。",
+          detail: "位于一楼（1F）的围场是 The Sanctum 的社交灵魂。\n\n氛围：\n黑暗、情绪化且亲密。\n\n服务区：\n当您休息时，我们认证的技术人员会对您的车辆进行必要的维护和美容。\n\n餐饮：\n客人可免费享用精选的稀有威士忌、干邑白兰地和手工咖啡。",
           price: "包含访问权限"
         },
         {
@@ -455,7 +455,7 @@ export const translations: Record<Language, any> = {
     gateway: {
       title: "入口服务",
       subtitle: "日本/俄罗斯越野者的站式解决方案",
-      desc: "Studio 675 代办复杂的临时进口文件 (T.I.D), 海关保证金和强制保险。",
+      desc: "The Sanctum 代办复杂的临时进口文件 (T.I.D), 海关保证金和强制保险。",
       list: [
         "临时进出口清关代理",
         "韩国强制保险办理",
@@ -535,7 +535,7 @@ export const translations: Record<Language, any> = {
     },
     hero: {
       subtitle: "Suites de Garaje Privadas",
-      title: "THE GLASS ROOM",
+      title: "THE SANCTUM",
       slogan: "Drive In. Zone Out.",
       desc: "Experimente la transparencia del lujo.\nSu vehículo, exhibido en su santuario privado.",
       enter: "ENTRAR AL SANTUARIO",
@@ -544,7 +544,7 @@ export const translations: Record<Language, any> = {
     features: {
       concept: "El Concepto",
       title: "Diseñado para el Individuo Motivado.",
-      desc: "Glass Room reinventa la estancia de lujo. Entendemos que su vehículo es una extensión de usted mismo. Nuestras \"Garage Suites\" cuentan con áreas de visualización con paredes de vidrio que conectan su garaje privado con su espacio vital.",
+      desc: "The Sanctum reinventa la estancia de lujo. Entendemos que su vehículo es una extensión de usted mismo. Nuestras \"Garage Suites\" cuentan con áreas de visualización con paredes de vidrio que conectan su garaje privado con su espacio vital.",
       items: [
         { title: "Privacidad Absoluta", desc: "Check-in vía app. Conduzca directamente a su garaje. Sin recepción, sin cámaras, sin miradas." },
         { title: "Perfección Acústica", desc: "Paredes insonorizadas y sistemas de audio Bang & Olufsen de alta fidelidad en cada habitación." },
@@ -572,7 +572,7 @@ export const translations: Record<Language, any> = {
         {
           title: "The Paddock Lounge",
           desc: "Ubicado en el 1er piso. Un centro social exclusivo que ofrece bebidas curadas and mantenimiento profesional de vehículos.",
-          detail: "Ubicado en la planta baja (1F), The Paddock es el alma comunitaria de Glass Room.\n\nAtmósfera:\nOscura, melancólica e íntima.\n\nBahía de Servicio:\nMientras se relaja, nuestros técnicos certificados realizan mantenimiento esencial y detallado de su vehículo.\n\nAlimentos y Bebidas:\nLos huéspedes disfrutan de acceso gratuito a una selección curada de whiskies raros, coñacs y café artesanal.",
+          detail: "Ubicado en la planta baja (1F), The Paddock es el alma comunitaria de The Sanctum.\n\nAtmósfera:\nOscura, melancólica e íntima.\n\nBahía de Servicio:\nMientras se relaja, nuestros técnicos certificados realizan mantenimiento esencial y detallado de su vehículo.\n\nAlimentos y Bebidas:\nLos huéspedes disfrutan de acceso gratuito a una selección curada de whiskies raros, coñacs y café artesanal.",
           price: "Acceso Incluido"
         },
         {
@@ -586,7 +586,7 @@ export const translations: Record<Language, any> = {
     gateway: {
       title: "Servicio Gateway",
       subtitle: "Solución integral para overlanders de Japón/Rusia",
-      desc: "Studio 675 se encarga de los complejos documentos de importación temporal (T.I.D) y el seguro obligatorio.",
+      desc: "The Sanctum se encarga de los complejos documentos de importación temporal (T.I.D) y el seguro obligatorio.",
       list: [
         "Despacho de aduanas temporal",
         "Seguro obligatorio coreano",
@@ -666,7 +666,7 @@ export const translations: Record<Language, any> = {
     },
     hero: {
       subtitle: "Частные Гаражные Люксы",
-      title: "THE GLASS ROOM",
+      title: "THE SANCTUM",
       slogan: "Drive In. Zone Out.",
       desc: "Ощутите прозрачность роскоши.\nВаш автомобиль, выставленный в вашем личном святилище.",
       enter: "ВОЙТИ В СВЯТИЛИЩЕ",
@@ -675,7 +675,7 @@ export const translations: Record<Language, any> = {
     features: {
       concept: "Концепция",
       title: "Создано для увлеченных.",
-      desc: "Glass Room изобретает заново роскошный отдых. Мы понимаем, что ваш автомобиль — это продолжение вас самих. Наши «Гаражные Люксы» оснащены стеклянными стенами, соединяющими ваш личный гараж с жилой зоной.",
+      desc: "The Sanctum изобретает заново роскошный отдых. Мы понимаем, что ваш автомобиль — это продолжение вас самих. Наши «Гаражные Люксы» оснащены стеклянными стенами, соединяющими ваш личный гараж с жилой зоной.",
       items: [
         { title: "Абсолютная Приватность", desc: "Регистрация через приложение. Заезжайте прямо в гараж вашего люкса. Никакой стойки регистрации, никаких камер, никаких взглядов." },
         { title: "Акустическое Совершенство", desc: "Звукоизолированные стены и аудиосистемы Bang & Olufsen высокой четкости в каждой комнате." },
@@ -703,7 +703,7 @@ export const translations: Record<Language, any> = {
         {
           title: "Лаундж Паддок",
           desc: "Расположен на 1 этаже. Эксклюзивный социальный центр, предлагающий напитки и профессиональное обслуживание автомобилей.",
-          detail: "Расположенный на первом этаже (1F), Паддок является социальной душой Glass Room.\n\nАтмосфера:\nТемная, угрюмая и интимная.\n\nСервисный Отсек:\nПока вы отдыхаете, наши сертифицированные специалисты выполняют необходимое обслуживание и детейлинг вашего автомобиля.\n\nЕда и Напитки:\nГости могут бесплатно насладиться отборными редкими сортами виски, коньяка и авторским кофе.",
+          detail: "Расположенный на первом этаже (1F), Паддок является социальной душой The Sanctum.\n\nАтмосфера:\nТемная, угрюмая и интимная.\n\nСервисный Отсек:\nПока вы отдыхаете, наши сертифицированные специалисты выполняют необходимое обслуживание и детейлинг вашего автомобиля.\n\nЕда и Напитки:\nГости могут бесплатно насладиться отборными редкими сортами виски, коньяка и авторским кофе.",
           price: "Доступ Включен"
         },
         {
@@ -717,7 +717,7 @@ export const translations: Record<Language, any> = {
     gateway: {
       title: "Сервис Gateway",
       subtitle: "Комплексное решение для путешественников из Японии и России",
-      desc: "Studio 675 берет на себя оформление документов для временного ввоза (T.I.D) и обязательное страхование.",
+      desc: "The Sanctum берет на себя оформление документов для временного ввоза (T.I.D) и обязательное страхование.",
       list: [
         "Таможенное оформление",
         "Обязательное корейское страхование",

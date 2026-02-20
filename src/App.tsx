@@ -8,7 +8,9 @@ import ConceptStory from './components/ConceptStory';
 import SuitesModal from './components/SuitesModal';
 import AmenitiesModal from './components/AmenitiesModal';
 import ReservationModal from './components/ReservationModal';
+import CuratedLifestyle from './components/CuratedLifestyle';
 import { Language } from './types';
+import { Hexagon } from 'lucide-react';
 
 const App: React.FC = () => {
   const [isChatOpen, setIsChatOpen] = useState(false);
@@ -67,18 +69,22 @@ const App: React.FC = () => {
         <Hero language={language} />
         <Features language={language} />
         <Gallery onReserve={openReservation} language={language} />
+        <CuratedLifestyle language={language} />
 
         {/* Footer Section */}
         <footer className="bg-black py-16 border-t border-white/10">
           <div className="max-w-7xl mx-auto px-6 text-center">
-            <h2 className="font-serif text-2xl font-bold text-white tracking-widest mb-6">GLASS ROOM</h2>
+            <div className="flex justify-center items-center gap-3 mb-6">
+              <Hexagon className="w-5 h-5 text-luxury-gold" strokeWidth={1.5} />
+              <h2 className="font-serif text-2xl font-bold text-white tracking-widest">THE SANCTUM</h2>
+            </div>
             <div className="flex justify-center gap-8 mb-8 text-sm text-slate-500">
               <a href="https://www.instagram.com/studio675_glass.room?igsh=MWIyYTExZXJ4aWp1Zw%3D%3D&utm_source=qr" target="_blank" rel="noopener noreferrer" className="hover:text-luxury-gold transition-colors">Instagram</a>
               <a href="#" className="hover:text-luxury-gold transition-colors" onClick={(e) => e.preventDefault()}>Twitter</a>
               <button onClick={openChat} className="hover:text-luxury-gold transition-colors">Contact</button>
             </div>
             <p className="text-xs text-slate-600 uppercase tracking-widest">
-              © {new Date().getFullYear()} Glass Room. All rights reserved.
+              © {new Date().getFullYear()} The Sanctum. All rights reserved.
             </p>
           </div>
         </footer>
