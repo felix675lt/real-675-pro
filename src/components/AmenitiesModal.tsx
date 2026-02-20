@@ -130,50 +130,50 @@ const AmenitiesModal: React.FC<AmenitiesModalProps> = ({ isOpen, onClose, onRese
                   <ul className="space-y-3">
                     {t.gateway.list.map((item: string, idx: number) => (
                       <li key={idx} className="flex items-center gap-3">
-                        <CheckCircle2 className="w-5 h-5 text-green-500" />
+                        <CheckCircle2 className="w-5 h-5 text-luxury-gold" />
                         <span className="text-slate-300 text-sm font-light">{item}</span>
                       </li>
                     ))}
                   </ul>
 
-                  <div className="p-4 bg-blue-500/10 border border-blue-500/20 rounded-lg flex gap-3">
-                    <Info className="w-5 h-5 text-blue-400 shrink-0" />
-                    <p className="text-xs text-blue-100/70 leading-relaxed">
-                      This service is exclusively for guests arriving with international vehicles via ferries. The Sanctum is the official provider for The The Sanctum.
+                  <div className="p-4 bg-luxury-gold/5 border border-luxury-gold/20 rounded-lg flex gap-3">
+                    <Info className="w-5 h-5 text-luxury-gold/70 shrink-0" />
+                    <p className="text-xs text-slate-300 leading-relaxed">
+                      This service is exclusively for guests arriving with international vehicles via ferries. THE SANCTUM is the official provider for this facility.
                     </p>
                   </div>
                 </div>
 
                 {/* Gateway Form */}
-                <div className="bg-black/40 p-8 rounded-xl border border-white/10 shadow-xl">
+                <div className="bg-black/60 p-8 rounded-xl border border-white/5 shadow-2xl backdrop-blur-sm">
                   <h4 className="text-sm uppercase tracking-widest text-luxury-gold mb-6">{t.gateway.formTitle}</h4>
                   <form onSubmit={handleSubmitGateway} className="space-y-4">
                     <input
                       type="text" required placeholder={t.gateway.fields.name}
-                      className="w-full bg-[#1e1e1e] border border-white/10 rounded px-4 py-3 text-sm text-white focus:border-luxury-gold focus:outline-none transition-colors"
+                      className="w-full bg-white/5 border border-white/10 rounded px-4 py-3 text-sm text-white focus:border-luxury-gold focus:bg-white/10 focus:outline-none transition-all placeholder:text-white/30"
                     />
                     <input
                       type="email" required placeholder={t.gateway.fields.email}
-                      className="w-full bg-[#1e1e1e] border border-white/10 rounded px-4 py-3 text-sm text-white focus:border-luxury-gold focus:outline-none transition-colors"
+                      className="w-full bg-white/5 border border-white/10 rounded px-4 py-3 text-sm text-white focus:border-luxury-gold focus:bg-white/10 focus:outline-none transition-all placeholder:text-white/30"
                     />
                     <div className="grid grid-cols-2 gap-4">
                       <input
                         type="text" required placeholder={t.gateway.fields.vehicle}
-                        className="w-full bg-[#1e1e1e] border border-white/10 rounded px-4 py-3 text-sm text-white focus:border-luxury-gold focus:outline-none transition-colors"
+                        className="w-full bg-white/5 border border-white/10 rounded px-4 py-3 text-sm text-white focus:border-luxury-gold focus:bg-white/10 focus:outline-none transition-all placeholder:text-white/30"
                       />
                       <input
                         type="text" required placeholder={t.gateway.fields.plate}
-                        className="w-full bg-[#1e1e1e] border border-white/10 rounded px-4 py-3 text-sm text-white focus:border-luxury-gold focus:outline-none transition-colors"
+                        className="w-full bg-white/5 border border-white/10 rounded px-4 py-3 text-sm text-white focus:border-luxury-gold focus:bg-white/10 focus:outline-none transition-all placeholder:text-white/30"
                       />
                     </div>
                     <input
                       type="text" required onFocus={(e) => e.target.type = 'date'} onBlur={(e) => !e.target.value && (e.target.type = 'text')}
                       placeholder={t.gateway.fields.date}
-                      className="w-full bg-[#1e1e1e] border border-white/10 rounded px-4 py-3 text-sm text-white focus:border-luxury-gold focus:outline-none transition-colors"
+                      className="w-full bg-white/5 border border-white/10 rounded px-4 py-3 text-sm text-white focus:border-luxury-gold focus:bg-white/10 focus:outline-none transition-all placeholder:text-white/30"
                     />
                     <button
                       type="submit"
-                      className="w-full bg-[#ff4b2b] hover:bg-white hover:text-black text-white font-bold py-4 rounded transition-all tracking-[0.2em] uppercase text-xs mt-2"
+                      className="w-full bg-transparent border border-luxury-gold text-luxury-gold hover:bg-luxury-gold hover:text-black font-bold py-4 rounded transition-all tracking-[0.2em] uppercase text-xs mt-4 shadow-[0_0_15px_rgba(212,175,55,0.1)] hover:shadow-[0_0_20px_rgba(212,175,55,0.3)]"
                     >
                       {t.gateway.button}
                     </button>
