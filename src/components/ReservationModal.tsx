@@ -1,8 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { loadPaymentWidget, PaymentWidgetInstance } from '@tosspayments/payment-widget-sdk';
 import { X, Calendar, Clock, CreditCard, CheckCircle, ChevronRight, ChevronLeft, Moon, Sun, Users, Lock, Truck, MessageSquare } from 'lucide-react';
+import { PayPalScriptProvider, PayPalButtons } from '@paypal/react-paypal-js';
 import { Language } from '../types';
 import { translations } from '../translations';
+
+const PAYPAL_CLIENT_ID = "AdDd-Uz8w-5a-wGlsyroZcP0EdQDg7EgPB5LtQOCvQIGsfQ7o8Hu6pRQI5uOjNgMPTV3YqfGubTBKIjD";
 
 interface ReservationModalProps {
   isOpen: boolean;
@@ -360,14 +363,73 @@ const ReservationModal: React.FC<ReservationModalProps> = ({ isOpen, onClose, la
           </div>
         </div>
 
-        <div>
-          {/* Payment Widget Render Area */}
-          <div id="payment-widget" className="w-full" />
-          <div id="agreement" className="w-full" />
+        <div className="flex flex-col gap-6">
+          {/* Global Payment Options (PayPal) */}
+          <div className="bg-white/5 p-6 rounded-xl border border-white/10 relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-luxury-gold/5 rounded-full blur-3xl -mr-16 -mt-16"></div>
+            <h4 className="text-xs uppercase tracking-widest text-luxury-gold mb-6 flex items-center gap-2">
+              <CreditCard className="w-4 h-4" /> Global Payment
+            </h4>
+            <PayPalScriptProvider options={{ clientId: PAYPAL_CLIENT_ID, currency: "USD", intent: "capture", components: "buttons" }}>
+              <PayPalButtons
+                style={{ layout: "vertical", color: "gold", shape: "rect", label: "paypal", height: 48 }}
+                createOrder={(data, actions) => {
+                  return actions.order.create({
+                    intent: "CAPTURE",
+                    purchase_units: [
+                      {
+                        description: `Reservation - ${stayType === 'overnight' ? t.overnight : t.dayuse}`,
+                        amount: {
+                          currency_code: "USD",
+                          value: (stayType === 'overnight' ? 1200 : 450).toString(),
+                        },
+                      },
+                    ],
+                  });
+                }}
+                onApprove={async (data, actions) => {
+                  setIsProcessing(true);
+                  if (actions.order) {
+                    try {
+                      const details = await actions.order.capture();
+                      console.log("PayPal Transaction completed by " + details?.payer?.name?.given_name);
+                      setStep('confirmed');
+                    } catch (error) {
+                      console.error("PayPal Capture Error", error);
+                    } finally {
+                      setIsProcessing(false);
+                    }
+                  }
+                }}
+                onError={(err) => {
+                  console.error("PayPal Error:", err);
+                  setIsProcessing(false);
+                }}
+              />
+            </PayPalScriptProvider>
+          </div>
 
-          <button onClick={handlePayment} disabled={isProcessing} className="w-full bg-luxury-gold text-black py-4 uppercase tracking-widest font-semibold hover:bg-white transition-all disabled:opacity-50 mt-6">
-            {isProcessing ? t.processing : t.pay}
-          </button>
+          <div className="relative flex items-center py-2">
+            <div className="flex-grow border-t border-white/10"></div>
+            <span className="flex-shrink-0 mx-4 text-slate-600 text-[10px] tracking-widest uppercase font-medium">Or</span>
+            <div className="flex-grow border-t border-white/10"></div>
+          </div>
+
+          {/* Domestic Payment Options (Toss) */}
+          <div className="bg-white/5 p-6 rounded-xl border border-white/10">
+            <h4 className="text-xs uppercase tracking-widest text-slate-400 mb-4 px-2">
+              Domestic Payment (KRW)
+            </h4>
+            <div className="bg-white rounded-lg p-2">
+              {/* Payment Widget Render Area */}
+              <div id="payment-widget" className="w-full" />
+              <div id="agreement" className="w-full" />
+            </div>
+
+            <button onClick={handlePayment} disabled={isProcessing} className="w-full bg-luxury-gold text-black py-4 uppercase tracking-widest font-semibold hover:bg-white transition-all disabled:opacity-50 mt-4 rounded-b-lg">
+              {isProcessing ? t.processing : t.pay}
+            </button>
+          </div>
         </div>
       </div>
     </div>
