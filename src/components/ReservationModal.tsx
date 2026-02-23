@@ -533,7 +533,7 @@ const ReservationModal: React.FC<ReservationModalProps> = ({ isOpen, onClose, la
                           description: `Reservation - ${stayType === 'overnight' ? t.overnight : t.dayuse}`,
                           amount: {
                             currency_code: "USD",
-                            value: (stayType === 'overnight' ? 1200 : 450).toString(),
+                            value: totalPrice.toString(),
                           },
                         },
                       ],
