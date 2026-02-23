@@ -17,7 +17,7 @@ interface ReservationModalProps {
   initialStep?: Step;
 }
 
-type Step = 'type' | 'date' | 'payment' | 'confirmed';
+type Step = 'type' | 'date' | 'details' | 'payment' | 'confirmed';
 type StayType = 'overnight' | 'dayuse';
 
 const ReservationModal: React.FC<ReservationModalProps> = ({ isOpen, onClose, language, onContactConcierge, initialStep = 'type' }) => {
@@ -34,6 +34,11 @@ const ReservationModal: React.FC<ReservationModalProps> = ({ isOpen, onClose, la
   const [globalMethod, setGlobalMethod] = useState<'paypal' | 'usdt'>('paypal');
   const [isCopied, setIsCopied] = useState(false);
   const [usdtTxid, setUsdtTxid] = useState('');
+
+  // Customer Details State
+  const [customerName, setCustomerName] = useState('');
+  const [customerEmail, setCustomerEmail] = useState('');
+  const [customerPhone, setCustomerPhone] = useState('');
 
   const USDT_ADDRESS = "0x5c9856c32eaff6659aae211d816b45a8b50de756";
 
@@ -57,6 +62,9 @@ const ReservationModal: React.FC<ReservationModalProps> = ({ isOpen, onClose, la
       setIncludeGateway(false);
       setGatewayInfo({ vehicle: '', plate: '' });
       setUsdtTxid('');
+      setCustomerName('');
+      setCustomerEmail('');
+      setCustomerPhone('');
       setViewDate(new Date());
       if (selectedDate < new Date()) {
         setSelectedDate(new Date());
@@ -305,11 +313,67 @@ const ReservationModal: React.FC<ReservationModalProps> = ({ isOpen, onClose, la
               )}
             </div>
 
-            <button onClick={() => setStep('payment')} className="w-full bg-luxury-gold text-black py-4 uppercase tracking-widest font-semibold hover:bg-white transition-colors flex items-center justify-center gap-2 mt-8">
+            <button onClick={() => setStep('details')} className="w-full bg-luxury-gold text-black py-4 uppercase tracking-widest font-semibold hover:bg-white transition-colors flex items-center justify-center gap-2 mt-8">
               {t.continue} <ChevronRight className="w-4 h-4" />
             </button>
           </div>
         </div>
+      </div>
+    </div>
+  );
+
+  const isDetailsValid = customerName.trim() !== '' && customerEmail.includes('@') && customerPhone.trim() !== '';
+
+  const renderDetails = () => (
+    <div className="h-full flex flex-col items-center justify-center animate-fade-in-up">
+      <div className="text-center mb-8 max-w-lg w-full">
+        <button onClick={() => setStep('date')} className="text-xs text-slate-500 hover:text-white mb-2 flex items-center justify-center gap-1 mx-auto">
+          <ChevronLeft className="w-3 h-3" /> {t.back}
+        </button>
+        <h2 className="text-luxury-gold text-xs font-bold tracking-[0.3em] uppercase mb-2">{t.detailsStep}</h2>
+        <h1 className="text-3xl font-serif text-white mb-2">{t.guestInfo}</h1>
+        <p className="text-slate-400 font-light">{t.guestDesc}</p>
+      </div>
+
+      <div className="w-full max-w-md space-y-6">
+        <div>
+          <label className="block text-xs uppercase tracking-widest text-slate-400 mb-2">{t.name}</label>
+          <input
+            type="text"
+            required
+            value={customerName}
+            onChange={(e) => setCustomerName(e.target.value)}
+            className="w-full bg-black/40 border border-white/10 rounded-lg px-4 py-3 text-white focus:border-luxury-gold focus:outline-none transition-colors"
+          />
+        </div>
+        <div>
+          <label className="block text-xs uppercase tracking-widest text-slate-400 mb-2">{t.email}</label>
+          <input
+            type="email"
+            required
+            value={customerEmail}
+            onChange={(e) => setCustomerEmail(e.target.value)}
+            className="w-full bg-black/40 border border-white/10 rounded-lg px-4 py-3 text-white focus:border-luxury-gold focus:outline-none transition-colors"
+          />
+        </div>
+        <div>
+          <label className="block text-xs uppercase tracking-widest text-slate-400 mb-2">{t.phone}</label>
+          <input
+            type="tel"
+            required
+            value={customerPhone}
+            onChange={(e) => setCustomerPhone(e.target.value)}
+            className="w-full bg-black/40 border border-white/10 rounded-lg px-4 py-3 text-white focus:border-luxury-gold focus:outline-none transition-colors"
+          />
+        </div>
+
+        <button
+          onClick={() => setStep('payment')}
+          disabled={!isDetailsValid}
+          className="w-full bg-luxury-gold text-black py-4 uppercase tracking-widest font-semibold hover:bg-white transition-colors flex items-center justify-center gap-2 mt-8 disabled:opacity-50 disabled:cursor-not-allowed rounded-lg"
+        >
+          {t.continuePayment} <ChevronRight className="w-4 h-4" />
+        </button>
       </div>
     </div>
   );
@@ -324,9 +388,9 @@ const ReservationModal: React.FC<ReservationModalProps> = ({ isOpen, onClose, la
       await paymentWidget.requestPayment({
         orderId: "order_id_" + new Date().getTime(),
         orderName: stayType === 'overnight' ? t.overnight : t.dayuse,
-        customerName: "Anonymous Customer",
-        customerEmail: "customer@example.com",
-        customerMobilePhone: "01012345678",
+        customerName: customerName || "Anonymous Customer",
+        customerEmail: customerEmail || "customer@example.com",
+        customerMobilePhone: customerPhone.replace(/[^0-9]/g, '') || "01012345678",
         successUrl: window.location.href,
         failUrl: window.location.href,
       });
@@ -339,8 +403,8 @@ const ReservationModal: React.FC<ReservationModalProps> = ({ isOpen, onClose, la
   const renderPayment = () => (
     <div className="max-w-4xl mx-auto animate-fade-in-up">
       <div className="text-center mb-8">
-        <button onClick={() => setStep('date')} className="text-xs text-slate-500 hover:text-white mb-2 flex items-center justify-center gap-1 mx-auto"><ChevronLeft className="w-3 h-3" /> {t.back}</button>
-        <h2 className="text-luxury-gold text-xs font-bold tracking-[0.3em] uppercase mb-2">{t.step3}</h2>
+        <button onClick={() => setStep('details')} className="text-xs text-slate-500 hover:text-white mb-2 flex items-center justify-center gap-1 mx-auto"><ChevronLeft className="w-3 h-3" /> {t.back}</button>
+        <h2 className="text-luxury-gold text-xs font-bold tracking-[0.3em] uppercase mb-2">{t.step4}</h2>
         <h1 className="text-3xl font-serif text-white">{t.secure}</h1>
       </div>
 
@@ -422,7 +486,9 @@ const ReservationModal: React.FC<ReservationModalProps> = ({ isOpen, onClose, la
                         console.log("PayPal Transaction completed by " + details?.payer?.name?.given_name);
 
                         await sendAdminNotification('결제 완료 (PayPal)', {
-                          '고객 이름': details?.payer?.name?.given_name || '이름 없음',
+                          '고객 이름': customerName || details?.payer?.name?.given_name || '이름 없음',
+                          '고객 이메일': customerEmail || '입력 없음',
+                          '고객 연락처': customerPhone || '입력 없음',
                           '예약일': selectedDate.toLocaleDateString(language),
                           '체크인': selectedTime,
                           '방문 유형': stayType === 'overnight' ? 'Overnight' : 'Day Use',
@@ -493,6 +559,9 @@ const ReservationModal: React.FC<ReservationModalProps> = ({ isOpen, onClose, la
 
                     await sendAdminNotification('결제 완료 (USDT)', {
                       'TXID (끝 4자리)': usdtTxid,
+                      '고객 이름': customerName,
+                      '고객 이메일': customerEmail,
+                      '고객 연락처': customerPhone,
                       '예약일': selectedDate.toLocaleDateString(language),
                       '체크인': selectedTime,
                       '방문 유형': stayType === 'overnight' ? 'Overnight' : 'Day Use',
@@ -550,6 +619,7 @@ const ReservationModal: React.FC<ReservationModalProps> = ({ isOpen, onClose, la
         <div className="flex-1 p-8 md:p-16 overflow-y-auto custom-scrollbar">
           {step === 'type' && renderTypeSelection()}
           {step === 'date' && renderDateSelection()}
+          {step === 'details' && renderDetails()}
           {step === 'payment' && renderPayment()}
           {step === 'confirmed' && (
             <div className="flex flex-col items-center justify-center h-full text-center">
