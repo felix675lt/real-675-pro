@@ -25,6 +25,8 @@ const ReservationModal: React.FC<ReservationModalProps> = ({ isOpen, onClose, la
   const [step, setStep] = useState<Step>('type');
   const [stayType, setStayType] = useState<StayType>('overnight');
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
+  const [endDate, setEndDate] = useState<Date | null>(null);
+  const [hasSelectedStartDate, setHasSelectedStartDate] = useState(false);
   const [viewDate, setViewDate] = useState<Date>(new Date());
   const [selectedTime, setSelectedTime] = useState<string>('15:00');
   const [guests, setGuests] = useState(2);
@@ -41,6 +43,26 @@ const ReservationModal: React.FC<ReservationModalProps> = ({ isOpen, onClose, la
   const [customerPhone, setCustomerPhone] = useState('');
 
   const USDT_ADDRESS = "0x5c9856c32eaff6659aae211d816b45a8b50de756";
+
+  const getPrice = () => {
+    if (stayType === 'dayuse') return 450;
+    if (stayType === 'overnight') {
+      if (!endDate) return 1200;
+      const diffTime = Math.abs(endDate.getTime() - selectedDate.getTime());
+      const nights = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+      return 1200 * (nights || 1); // Minimum 1 night
+    }
+    return 0;
+  };
+
+  const totalPrice = getPrice();
+
+  const getFormatDateRange = () => {
+    if (stayType === 'overnight' && endDate) {
+      return `${selectedDate.toLocaleDateString(language)} - ${endDate.toLocaleDateString(language)}`;
+    }
+    return selectedDate.toLocaleDateString(language);
+  };
 
   // Toss Payments Widget State (Moved to top level)
   const [paymentWidget, setPaymentWidget] = useState<PaymentWidgetInstance | null>(null);
@@ -66,6 +88,8 @@ const ReservationModal: React.FC<ReservationModalProps> = ({ isOpen, onClose, la
       setCustomerEmail('');
       setCustomerPhone('');
       setViewDate(new Date());
+      setEndDate(null);
+      setHasSelectedStartDate(false);
       if (selectedDate < new Date()) {
         setSelectedDate(new Date());
       }
@@ -86,7 +110,7 @@ const ReservationModal: React.FC<ReservationModalProps> = ({ isOpen, onClose, la
           // @ts-ignore
           const paymentMethodsWidget = paymentWidget.renderPaymentMethods(
             "#payment-widget",
-            { value: stayType === 'overnight' ? 1200 : 450 },
+            { value: totalPrice },
             { variantKey: "DEFAULT" }
           );
 
@@ -103,7 +127,7 @@ const ReservationModal: React.FC<ReservationModalProps> = ({ isOpen, onClose, la
         }
       })();
     }
-  }, [step, clientKey, customerKey, stayType]);
+  }, [step, clientKey, customerKey, totalPrice]);
 
   // Toss Payments Amount Update Effect
   useEffect(() => {
@@ -114,10 +138,8 @@ const ReservationModal: React.FC<ReservationModalProps> = ({ isOpen, onClose, la
     }
 
     // @ts-ignore
-    paymentMethodsWidget.updateAmount(
-      stayType === 'overnight' ? 1200 : 450
-    );
-  }, [stayType]);
+    paymentMethodsWidget.updateAmount(totalPrice);
+  }, [totalPrice]);
 
   if (!isOpen) return null;
 
@@ -146,7 +168,26 @@ const ReservationModal: React.FC<ReservationModalProps> = ({ isOpen, onClose, la
 
   const handleDateSelect = (day: number) => {
     const newDate = new Date(viewDate.getFullYear(), viewDate.getMonth(), day);
-    setSelectedDate(newDate);
+
+    if (stayType === 'dayuse') {
+      setSelectedDate(newDate);
+      setEndDate(null);
+    } else {
+      // Overnight logic
+      if (!hasSelectedStartDate) {
+        setSelectedDate(newDate);
+        setEndDate(null);
+        setHasSelectedStartDate(true);
+      } else if (!endDate && newDate > selectedDate) {
+        // Selecting end date
+        setEndDate(newDate);
+      } else {
+        // Resetting to new start date
+        setSelectedDate(newDate);
+        setEndDate(null);
+        setHasSelectedStartDate(true);
+      }
+    }
   };
 
   const changeMonth = (offset: number) => {
@@ -233,10 +274,26 @@ const ReservationModal: React.FC<ReservationModalProps> = ({ isOpen, onClose, la
             </div>
             <div className="grid grid-cols-7 gap-2">
               {generateCalendarDays().map((day, idx) => {
-                const isSelected = day && day === selectedDate.getDate() && viewDate.getMonth() === selectedDate.getMonth() && viewDate.getFullYear() === selectedDate.getFullYear();
-                const isPast = day && new Date(viewDate.getFullYear(), viewDate.getMonth(), day) < new Date(new Date().setHours(0, 0, 0, 0));
+                const currentDate = day ? new Date(viewDate.getFullYear(), viewDate.getMonth(), day) : null;
+                const isSelectedStart = currentDate && currentDate.getTime() === selectedDate.getTime();
+                const isSelectedEnd = currentDate && endDate && currentDate.getTime() === endDate.getTime();
+                const isBetween = currentDate && endDate && currentDate > selectedDate && currentDate < endDate && stayType === 'overnight';
+                const isPast = currentDate && currentDate < new Date(new Date().setHours(0, 0, 0, 0));
+
+                let baseClasses = "p-3 rounded-lg text-sm font-medium transition-all relative z-10 ";
+                if (!day) baseClasses += "invisible ";
+                else if (isPast) baseClasses += "text-slate-300 disabled:opacity-20 ";
+                else if (isSelectedStart || isSelectedEnd) baseClasses += "bg-luxury-gold text-black shadow-lg shadow-luxury-gold/20 font-bold ";
+                else if (isBetween) baseClasses += "bg-luxury-gold/20 text-luxury-gold ";
+                else baseClasses += "text-slate-300 hover:bg-white/10 ";
+
                 return (
-                  <button key={idx} disabled={!day || !!isPast} onClick={() => day && handleDateSelect(day)} className={`p-3 rounded-lg text-sm font-medium transition-all ${!day ? 'invisible' : ''} ${isSelected ? 'bg-luxury-gold text-black shadow-lg shadow-luxury-gold/20' : 'text-slate-300 hover:bg-white/10 disabled:opacity-20'}`}>
+                  <button
+                    key={idx}
+                    disabled={!day || !!isPast}
+                    onClick={() => day && handleDateSelect(day)}
+                    className={baseClasses}
+                  >
                     {day}
                   </button>
                 );
@@ -313,8 +370,12 @@ const ReservationModal: React.FC<ReservationModalProps> = ({ isOpen, onClose, la
               )}
             </div>
 
-            <button onClick={() => setStep('details')} className="w-full bg-luxury-gold text-black py-4 uppercase tracking-widest font-semibold hover:bg-white transition-colors flex items-center justify-center gap-2 mt-8">
-              {t.continue} <ChevronRight className="w-4 h-4" />
+            <button
+              onClick={() => setStep('details')}
+              disabled={stayType === 'overnight' && !endDate}
+              className="w-full bg-luxury-gold text-black py-4 uppercase tracking-widest font-semibold hover:bg-white transition-colors flex items-center justify-center gap-2 mt-8 disabled:opacity-50 disabled:cursor-not-allowed rounded-lg"
+            >
+              {stayType === 'overnight' && !endDate ? 'Select Check-out Date' : t.continue} <ChevronRight className="w-4 h-4" />
             </button>
           </div>
         </div>
@@ -418,7 +479,7 @@ const ReservationModal: React.FC<ReservationModalProps> = ({ isOpen, onClose, la
             </div>
             <div className="flex justify-between text-slate-300">
               <span>{t.date}</span>
-              <span className="text-white font-medium">{selectedDate.toLocaleDateString(language)}</span>
+              <span className="text-white font-medium text-right text-xs md:text-sm">{getFormatDateRange()}</span>
             </div>
             {includeGateway && (
               <div className="flex justify-between text-luxury-gold text-xs italic">
@@ -429,7 +490,7 @@ const ReservationModal: React.FC<ReservationModalProps> = ({ isOpen, onClose, la
             <div className="border-t border-white/10 pt-4 mt-4">
               <div className="flex justify-between items-center">
                 <span className="text-slate-400">{t.total}</span>
-                <span className="text-2xl font-serif text-luxury-gold">${stayType === 'overnight' ? 1200 : 450}.00</span>
+                <span className="text-2xl font-serif text-luxury-gold">${totalPrice.toLocaleString()}.00</span>
               </div>
             </div>
           </div>
@@ -489,11 +550,11 @@ const ReservationModal: React.FC<ReservationModalProps> = ({ isOpen, onClose, la
                           '고객 이름': customerName || details?.payer?.name?.given_name || '이름 없음',
                           '고객 이메일': customerEmail || '입력 없음',
                           '고객 연락처': customerPhone || '입력 없음',
-                          '예약일': selectedDate.toLocaleDateString(language),
+                          '예약일 (기간)': getFormatDateRange(),
                           '체크인': selectedTime,
                           '방문 유형': stayType === 'overnight' ? 'Overnight' : 'Day Use',
                           '인원수': `${guests}명`,
-                          '결제 금액': `$${stayType === 'overnight' ? 1200 : 450}`,
+                          '결제 금액': `$${totalPrice.toLocaleString()}`,
                           ...(includeGateway && {
                             'Gateway Info': `차량: ${gatewayInfo.vehicle}, 차량번호: ${gatewayInfo.plate}`
                           })
@@ -562,11 +623,11 @@ const ReservationModal: React.FC<ReservationModalProps> = ({ isOpen, onClose, la
                       '고객 이름': customerName,
                       '고객 이메일': customerEmail,
                       '고객 연락처': customerPhone,
-                      '예약일': selectedDate.toLocaleDateString(language),
+                      '예약일 (기간)': getFormatDateRange(),
                       '체크인': selectedTime,
                       '방문 유형': stayType === 'overnight' ? 'Overnight' : 'Day Use',
                       '인원수': `${guests}명`,
-                      '결제 금액': `$${stayType === 'overnight' ? 1200 : 450}`,
+                      '결제 금액': `$${totalPrice.toLocaleString()}`,
                       ...(includeGateway && {
                         'Gateway Info': `차량: ${gatewayInfo.vehicle}, 차량번호: ${gatewayInfo.plate}`
                       })
