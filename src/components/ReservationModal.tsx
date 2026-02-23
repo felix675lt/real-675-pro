@@ -5,6 +5,7 @@ import { PayPalScriptProvider, PayPalButtons } from '@paypal/react-paypal-js';
 import { QRCodeSVG } from 'qrcode.react';
 import { Language } from '../types';
 import { translations } from '../translations';
+import { sendAdminNotification } from '../utils/email';
 
 const PAYPAL_CLIENT_ID = "AdDd-Uz8w-5a-wGlsyroZcP0EdQDg7EgPB5LtQOCvQIGsfQ7o8Hu6pRQI5uOjNgMPTV3YqfGubTBKIjD";
 
@@ -32,6 +33,7 @@ const ReservationModal: React.FC<ReservationModalProps> = ({ isOpen, onClose, la
   const [gatewayInfo, setGatewayInfo] = useState({ vehicle: '', plate: '' });
   const [globalMethod, setGlobalMethod] = useState<'paypal' | 'usdt'>('paypal');
   const [isCopied, setIsCopied] = useState(false);
+  const [usdtTxid, setUsdtTxid] = useState('');
 
   const USDT_ADDRESS = "0x5c9856c32eaff6659aae211d816b45a8b50de756";
 
@@ -54,6 +56,7 @@ const ReservationModal: React.FC<ReservationModalProps> = ({ isOpen, onClose, la
       setIsProcessing(false);
       setIncludeGateway(false);
       setGatewayInfo({ vehicle: '', plate: '' });
+      setUsdtTxid('');
       setViewDate(new Date());
       if (selectedDate < new Date()) {
         setSelectedDate(new Date());
@@ -417,6 +420,19 @@ const ReservationModal: React.FC<ReservationModalProps> = ({ isOpen, onClose, la
                       try {
                         const details = await actions.order.capture();
                         console.log("PayPal Transaction completed by " + details?.payer?.name?.given_name);
+
+                        await sendAdminNotification('결제 완료 (PayPal)', {
+                          '고객 이름': details?.payer?.name?.given_name || '이름 없음',
+                          '예약일': selectedDate.toLocaleDateString(language),
+                          '체크인': selectedTime,
+                          '방문 유형': stayType === 'overnight' ? 'Overnight' : 'Day Use',
+                          '인원수': `${guests}명`,
+                          '결제 금액': `$${stayType === 'overnight' ? 1200 : 450}`,
+                          ...(includeGateway && {
+                            'Gateway Info': `차량: ${gatewayInfo.vehicle}, 차량번호: ${gatewayInfo.plate}`
+                          })
+                        });
+
                         setStep('confirmed');
                       } catch (error) {
                         console.error("PayPal Capture Error", error);
@@ -456,16 +472,44 @@ const ReservationModal: React.FC<ReservationModalProps> = ({ isOpen, onClose, la
                   </button>
                 </div>
 
+                <div className="w-full max-w-xs mt-4 mb-2">
+                  <label className="block text-[10px] uppercase tracking-widest text-slate-400 text-left mb-1">
+                    TXID (Last 4 Digits)
+                  </label>
+                  <input
+                    type="text"
+                    maxLength={4}
+                    placeholder="e.g. A1B2"
+                    value={usdtTxid}
+                    onChange={(e) => setUsdtTxid(e.target.value.toUpperCase())}
+                    className="w-full bg-black/40 border border-white/10 rounded px-4 py-2 text-sm text-center text-white focus:border-luxury-gold focus:outline-none tracking-widest uppercase placeholder:text-slate-600"
+                  />
+                  <p className="text-[10px] text-slate-500 text-left mt-1">Please enter the last 4 digits of your TXID to verify your deposit.</p>
+                </div>
+
                 <button
-                  onClick={() => {
+                  onClick={async () => {
                     setIsProcessing(true);
+
+                    await sendAdminNotification('결제 완료 (USDT)', {
+                      'TXID (끝 4자리)': usdtTxid,
+                      '예약일': selectedDate.toLocaleDateString(language),
+                      '체크인': selectedTime,
+                      '방문 유형': stayType === 'overnight' ? 'Overnight' : 'Day Use',
+                      '인원수': `${guests}명`,
+                      '결제 금액': `$${stayType === 'overnight' ? 1200 : 450}`,
+                      ...(includeGateway && {
+                        'Gateway Info': `차량: ${gatewayInfo.vehicle}, 차량번호: ${gatewayInfo.plate}`
+                      })
+                    });
+
                     setTimeout(() => {
                       setIsProcessing(false);
                       setStep('confirmed');
-                    }, 1500);
+                    }, 500);
                   }}
-                  disabled={isProcessing}
-                  className="w-full mt-6 py-3.5 bg-luxury-gold/10 hover:bg-luxury-gold/20 text-luxury-gold border border-luxury-gold/30 hover:border-luxury-gold/60 rounded text-xs uppercase tracking-widest transition-all font-semibold flex items-center justify-center gap-2"
+                  disabled={isProcessing || usdtTxid.length !== 4}
+                  className="w-full mt-4 py-3.5 bg-luxury-gold/10 hover:bg-luxury-gold/20 text-luxury-gold border border-luxury-gold/30 hover:border-luxury-gold/60 rounded text-xs uppercase tracking-widest transition-all font-semibold flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {isProcessing ? 'Verifying...' : 'I have sent the payment'}
                 </button>
