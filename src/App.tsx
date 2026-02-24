@@ -9,6 +9,7 @@ import SuitesModal from './components/SuitesModal';
 import AmenitiesModal from './components/AmenitiesModal';
 import ReservationModal from './components/ReservationModal';
 import CuratedLifestyle from './components/CuratedLifestyle';
+import PolicyModal, { PolicyType } from './components/PolicyModal';
 import { Language } from './types';
 import { Hexagon } from 'lucide-react';
 
@@ -21,6 +22,7 @@ const App: React.FC = () => {
   const [isReservationOpen, setIsReservationOpen] = useState(false);
   const [reservationInitialStep, setReservationInitialStep] = useState<'type' | 'date' | 'payment' | 'confirmed'>('type');
   const [language, setLanguage] = useState<Language>('en');
+  const [policyType, setPolicyType] = useState<PolicyType>(null);
 
   const openChat = () => setIsChatOpen(true);
   const openAmenities = (tab: 'amenities' | 'gateway' = 'amenities') => {
@@ -30,6 +32,10 @@ const App: React.FC = () => {
   const openReservation = () => {
     setReservationInitialStep('type');
     setIsReservationOpen(true);
+  };
+  const openPolicy = (type: PolicyType, e: React.MouseEvent) => {
+    e.preventDefault();
+    setPolicyType(type);
   };
 
   // Check for Payment Success Redirect
@@ -78,10 +84,15 @@ const App: React.FC = () => {
               <Hexagon className="w-5 h-5 text-luxury-gold" strokeWidth={1.5} />
               <h2 className="font-serif text-2xl font-bold text-white tracking-widest">THE SANCTUM</h2>
             </div>
-            <div className="flex justify-center gap-8 mb-8 text-sm text-slate-500">
+            <div className="flex justify-center gap-8 mb-4 text-sm text-slate-500">
               <a href="https://www.instagram.com/studio675_glass.room?igsh=MWIyYTExZXJ4aWp1Zw%3D%3D&utm_source=qr" target="_blank" rel="noopener noreferrer" className="hover:text-luxury-gold transition-colors">Instagram</a>
               <a href="#" className="hover:text-luxury-gold transition-colors" onClick={(e) => e.preventDefault()}>Twitter</a>
               <button onClick={openChat} className="hover:text-luxury-gold transition-colors">Contact</button>
+            </div>
+            <div className="flex justify-center gap-6 mb-8 text-xs text-slate-600">
+              <a href="#" className="hover:text-luxury-gold transition-colors" onClick={(e) => openPolicy('terms', e)}>Terms of Service</a>
+              <a href="#" className="hover:text-luxury-gold transition-colors" onClick={(e) => openPolicy('privacy', e)}>Privacy Policy</a>
+              <a href="#" className="hover:text-luxury-gold transition-colors" onClick={(e) => openPolicy('refund', e)}>Refund Policy</a>
             </div>
             <p className="text-xs text-slate-600 uppercase tracking-widest">
               © {new Date().getFullYear()} The Sanctum. All rights reserved.
@@ -106,6 +117,12 @@ const App: React.FC = () => {
         language={language}
         onContactConcierge={openChat}
         initialStep={reservationInitialStep}
+      />
+
+      <PolicyModal
+        isOpen={!!policyType}
+        onClose={() => setPolicyType(null)}
+        type={policyType}
       />
 
       <Concierge isOpen={isChatOpen} setIsOpen={setIsChatOpen} />
