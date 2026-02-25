@@ -555,26 +555,28 @@ const ReservationModal: React.FC<ReservationModalProps> = ({ isOpen, onClose, la
           <div className="bg-white/5 p-6 rounded-xl border border-white/10 relative overflow-hidden">
             <div className="absolute top-0 right-0 w-32 h-32 bg-luxury-gold/5 rounded-full blur-3xl -mr-16 -mt-16"></div>
 
-            <div className="mb-6">
-              <h4 className="text-xs uppercase tracking-widest text-luxury-gold flex items-center gap-2 mb-4">
+            <div className="flex items-center justify-between mb-6">
+              <h4 className="text-xs uppercase tracking-widest text-luxury-gold flex items-center gap-2">
                 <CreditCard className="w-4 h-4" /> Global Payment
               </h4>
-              <div className="grid grid-cols-2 gap-3">
+              <div className="flex gap-2">
                 <button
                   onClick={() => setGlobalMethod('paypal')}
-                  className={`relative py-4 px-2 rounded-xl border transition-all flex flex-col items-center justify-center gap-2 ${globalMethod === 'paypal' ? 'border-luxury-gold bg-luxury-gold/10 shadow-[0_0_15px_rgba(212,175,55,0.15)]' : 'border-white/10 bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white'}`}
+                  className={`text-[10px] uppercase tracking-widest px-3 py-1 rounded-full border transition-all ${globalMethod === 'paypal' ? 'border-luxury-gold text-luxury-gold bg-luxury-gold/10 shadow-[0_0_15px_rgba(212,175,55,0.15)]' : 'border-white/10 text-slate-500 hover:text-white hover:border-white/30'}`}
                 >
-                  <span className={`text-xs md:text-sm tracking-widest uppercase font-medium ${globalMethod === 'paypal' ? 'text-luxury-gold' : ''}`}>PayPal</span>
+                  PayPal
                 </button>
-                <button
-                  onClick={() => setGlobalMethod('usdt')}
-                  className={`relative py-4 px-2 rounded-xl border transition-all flex flex-col items-center justify-center gap-2 ${globalMethod === 'usdt' ? 'border-luxury-gold bg-luxury-gold/10 shadow-[0_0_15px_rgba(212,175,55,0.15)]' : 'border-white/10 bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white'}`}
-                >
-                  <div className="absolute -top-2.5 bg-luxury-gold text-black text-[8px] md:text-[9px] font-bold px-2 py-0.5 rounded-full uppercase tracking-widest shadow-lg shadow-luxury-gold/20 z-10 whitespace-nowrap">
-                    5% Off Privilege
+                <div className="relative">
+                  <div className="absolute -top-3 -right-2 bg-luxury-gold text-black text-[8px] font-bold px-1.5 py-0.5 rounded uppercase tracking-tighter shadow-sm shadow-luxury-gold/20 z-10 pointer-events-none transform rotate-[4deg]">
+                    5% OFF
                   </div>
-                  <span className={`text-xs md:text-sm tracking-widest uppercase font-medium ${globalMethod === 'usdt' ? 'text-luxury-gold' : ''}`}>USDT</span>
-                </button>
+                  <button
+                    onClick={() => setGlobalMethod('usdt')}
+                    className={`text-[10px] uppercase tracking-widest px-3 py-1 rounded-full border transition-all h-full ${globalMethod === 'usdt' ? 'border-luxury-gold text-luxury-gold bg-luxury-gold/10 shadow-[0_0_15px_rgba(212,175,55,0.15)]' : 'border-white/10 text-slate-500 hover:text-white hover:border-white/30'}`}
+                  >
+                    USDT
+                  </button>
+                </div>
               </div>
             </div>
 
