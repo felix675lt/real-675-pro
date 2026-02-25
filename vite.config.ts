@@ -83,53 +83,6 @@ export default defineConfig(({ mode }) => {
               next();
             }
           });
-
-          // 3. Stripe Payment Intent Mock
-          server.middlewares.use('/api/create-payment-intent', async (req, res, next) => {
-            if (req.method === 'POST') {
-              let body = '';
-              req.on('data', chunk => {
-                body += chunk.toString();
-              });
-
-              req.on('end', async () => {
-                try {
-                  const { amount, currency = 'usd' } = JSON.parse(body);
-                  const stripeSecretKey = env.STRIPE_SECRET_KEY;
-
-                  if (!stripeSecretKey) {
-                    res.statusCode = 500;
-                    res.end(JSON.stringify({ error: 'Missing Stripe Secret Key' }));
-                    return;
-                  }
-
-                  // Dynamically import Stripe to avoid build issues if not present
-                  const Stripe = (await import('stripe')).default;
-                  const stripe = new Stripe(stripeSecretKey, {
-                    apiVersion: '2023-10-16',
-                  });
-
-                  const paymentIntent = await stripe.paymentIntents.create({
-                    amount,
-                    currency,
-                    automatic_payment_methods: {
-                      enabled: true,
-                    },
-                  });
-
-                  res.statusCode = 200;
-                  res.setHeader('Content-Type', 'application/json');
-                  res.end(JSON.stringify({ clientSecret: paymentIntent.client_secret }));
-                } catch (error) {
-                  console.error('Stripe Mock Error:', error);
-                  res.statusCode = 500;
-                  res.end(JSON.stringify({ error: error.message || 'Internal Server Error' }));
-                }
-              });
-            } else {
-              next();
-            }
-          });
         },
       },
     ],
