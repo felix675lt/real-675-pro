@@ -44,18 +44,51 @@ const ReservationModal: React.FC<ReservationModalProps> = ({ isOpen, onClose, la
 
   const USDT_ADDRESS = "0x5c9856c32eaff6659aae211d816b45a8b50de756";
 
-  const getPrice = () => {
-    if (stayType === 'dayuse') return 450;
-    if (stayType === 'overnight') {
-      if (!endDate) return 1200;
-      const diffTime = Math.abs(endDate.getTime() - selectedDate.getTime());
-      const nights = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-      return 1200 * (nights || 1); // Minimum 1 night
+  const getPriceBreakdown = () => {
+    let basePrice = 0;
+    let nights = 0;
+    let multiNightDiscount = 0;
+    let usdtDiscount = 0;
+
+    if (stayType === 'dayuse') {
+      basePrice = 450;
+    } else if (stayType === 'overnight') {
+      if (!endDate) {
+        basePrice = 1200;
+        nights = 1;
+      } else {
+        const diffTime = Math.abs(endDate.getTime() - selectedDate.getTime());
+        nights = Math.max(1, Math.ceil(diffTime / (1000 * 60 * 60 * 24)));
+        basePrice = 1200 * nights;
+
+        // Apply Multi-Night Discount
+        if (nights === 2) {
+          multiNightDiscount = basePrice * 0.10; // 10%
+        } else if (nights >= 3) {
+          multiNightDiscount = basePrice * 0.15; // 15%
+        }
+      }
     }
-    return 0;
+
+    let subtotal = basePrice - multiNightDiscount;
+
+    // Apply USDT Discount
+    if (step === 'payment' && globalMethod === 'usdt') {
+      usdtDiscount = subtotal * 0.05; // 5%
+    }
+
+    const finalPrice = Math.max(0, subtotal - usdtDiscount);
+
+    return {
+      basePrice,
+      nights,
+      multiNightDiscount,
+      usdtDiscount,
+      finalPrice
+    };
   };
 
-  const totalPrice = getPrice();
+  const { basePrice, multiNightDiscount, usdtDiscount, finalPrice: totalPrice } = getPriceBreakdown();
 
   const getFormatDateRange = () => {
     if (stayType === 'overnight' && endDate) {
@@ -487,10 +520,31 @@ const ReservationModal: React.FC<ReservationModalProps> = ({ isOpen, onClose, la
                 <span>{gatewayInfo.plate}</span>
               </div>
             )}
+            {multiNightDiscount > 0 && (
+              <div className="flex justify-between text-luxury-gold text-sm italic">
+                <span>Multi-Night Privilege</span>
+                <span>-${multiNightDiscount.toLocaleString()}.00</span>
+              </div>
+            )}
+            {usdtDiscount > 0 && step === 'payment' && globalMethod === 'usdt' && (
+              <div className="flex justify-between text-emerald-400 text-sm italic animate-fade-in">
+                <span>USDT Privilege</span>
+                <span>-${usdtDiscount.toLocaleString()}.00</span>
+              </div>
+            )}
             <div className="border-t border-white/10 pt-4 mt-4">
-              <div className="flex justify-between items-center">
-                <span className="text-slate-400">{t.total}</span>
-                <span className="text-2xl font-serif text-luxury-gold">${totalPrice.toLocaleString()}.00</span>
+              <div className="flex flex-col gap-1 items-end">
+                {(multiNightDiscount > 0 || usdtDiscount > 0) && (
+                  <span className="text-slate-500 line-through text-sm">
+                    ${basePrice.toLocaleString()}.00
+                  </span>
+                )}
+                <div className="flex justify-between items-center w-full">
+                  <span className="text-slate-400">{t.total}</span>
+                  <span className="text-2xl font-serif text-luxury-gold">
+                    ${totalPrice.toLocaleString()}.00
+                  </span>
+                </div>
               </div>
             </div>
           </div>
