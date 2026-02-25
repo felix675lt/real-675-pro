@@ -88,7 +88,7 @@ const ReservationModal: React.FC<ReservationModalProps> = ({ isOpen, onClose, la
     };
   };
 
-  const { basePrice, multiNightDiscount, usdtDiscount, finalPrice: totalPrice } = getPriceBreakdown();
+  const { basePrice, nights, multiNightDiscount, usdtDiscount, finalPrice: totalPrice } = getPriceBreakdown();
 
   const getFormatDateRange = () => {
     if (stayType === 'overnight' && endDate) {
@@ -403,10 +403,34 @@ const ReservationModal: React.FC<ReservationModalProps> = ({ isOpen, onClose, la
               )}
             </div>
 
+            {stayType === 'overnight' && endDate && multiNightDiscount > 0 && (
+              <div className="bg-luxury-gold/5 border border-luxury-gold/20 rounded-lg p-3 mt-6 flex items-start gap-3 animate-fade-in-up">
+                <div className="mt-0.5 text-luxury-gold"><Moon className="w-4 h-4" /></div>
+                <div>
+                  <h5 className="text-luxury-gold text-xs font-bold uppercase tracking-widest mb-1">Multi-Night Privilege Applied</h5>
+                  <p className="text-xs text-slate-400">
+                    You're enjoying a <span className="text-luxury-gold font-medium">{nights === 2 ? '10%' : '15%'} discount</span> on your stay.
+                    Save <span className="text-white">${multiNightDiscount.toLocaleString()}</span>.
+                  </p>
+                </div>
+              </div>
+            )}
+            {stayType === 'overnight' && !endDate && hasSelectedStartDate && (
+              <div className="bg-white/5 border border-white/10 rounded-lg p-3 mt-6 flex items-start gap-3 animate-fade-in-up">
+                <div className="mt-0.5 text-slate-400"><Moon className="w-4 h-4" /></div>
+                <div>
+                  <h5 className="text-slate-300 text-xs font-semibold uppercase tracking-widest mb-1">Stay Longer, Save More</h5>
+                  <p className="text-xs text-slate-400">
+                    Select your check-out date. Book 2 nights for 10% off, or 3+ nights for 15% off.
+                  </p>
+                </div>
+              </div>
+            )}
+
             <button
               onClick={() => setStep('details')}
               disabled={stayType === 'overnight' && !endDate}
-              className="w-full bg-luxury-gold text-black py-4 uppercase tracking-widest font-semibold hover:bg-white transition-colors flex items-center justify-center gap-2 mt-8 disabled:opacity-50 disabled:cursor-not-allowed rounded-lg"
+              className={`w-full bg-luxury-gold text-black py-4 uppercase tracking-widest font-semibold hover:bg-white transition-colors flex items-center justify-center gap-2 ${stayType === 'overnight' && hasSelectedStartDate ? 'mt-4' : 'mt-8'} disabled:opacity-50 disabled:cursor-not-allowed rounded-lg`}
             >
               {stayType === 'overnight' && !endDate ? 'Select Check-out Date' : t.continue} <ChevronRight className="w-4 h-4" />
             </button>
